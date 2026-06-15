@@ -1,0 +1,51 @@
+<svg width="1200" height="500" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cbBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3a1407"/>
+      <stop offset="55%" stop-color="#1c0a04"/>
+      <stop offset="100%" stop-color="#070302"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="url(#cbBg)"/>
+  <g stroke="#ff7a3d" stroke-opacity="0.10" stroke-width="1">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="240" y1="0" x2="240" y2="500"/>
+    <line x1="480" y1="0" x2="480" y2="500"/>
+    <line x1="720" y1="0" x2="720" y2="500"/>
+    <line x1="960" y1="0" x2="960" y2="500"/>
+  </g>
+
+  <text x="60" y="120" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800" fill="#fdeee6">
+    <tspan>Connect to anyone with </tspan><tspan fill="#ff7a3d">most</tspan>
+  </text>
+  <text x="60" y="165" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800">
+    <tspan fill="#ff7a3d">secure</tspan><tspan fill="#fdeee6"> system ever</tspan>
+  </text>
+
+  <!-- chat UI mockup -->
+  <g transform="translate(60,210)">
+    <rect x="0" y="0" width="1080" height="260" rx="14" fill="#140805" stroke="#3a1e12" stroke-width="2"/>
+    <rect x="0" y="0" width="240" height="260" rx="14" fill="#1d0e08"/>
+    <circle cx="35" cy="35" r="10" fill="#ff7a3d"/>
+    <rect x="58" y="28" width="120" height="14" rx="4" fill="#4a2c1c"/>
+    <g fill="#3a2316">
+      <rect x="20" y="70" width="200" height="34" rx="8"/>
+      <rect x="20" y="114" width="200" height="34" rx="8"/>
+      <rect x="20" y="158" width="200" height="34" rx="8"/>
+      <rect x="20" y="202" width="200" height="34" rx="8"/>
+    </g>
+
+    <!-- chat bubbles -->
+    <rect x="270" y="40" width="320" height="42" rx="14" fill="#2a160d"/>
+    <rect x="270" y="96" width="420" height="42" rx="14" fill="#2a160d"/>
+    <rect x="610" y="152" width="380" height="42" rx="14" fill="#ff7a3d"/>
+    <rect x="700" y="208" width="290" height="42" rx="14" fill="#ff7a3d"/>
+
+    <!-- avatar circles -->
+    <circle cx="940" cy="60" r="22" fill="#5c3a26"/>
+    <circle cx="270" cy="170" r="22" fill="#7a4a2f"/>
+  </g>
+</svg>

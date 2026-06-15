@@ -1,0 +1,47 @@
+<svg width="1200" height="500" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3a2410"/>
+      <stop offset="55%" stop-color="#1c1006"/>
+      <stop offset="100%" stop-color="#0a0604"/>
+    </linearGradient>
+    <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0e2a3d"/>
+      <stop offset="100%" stop-color="#02101c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="url(#bgGrad)"/>
+  <g stroke="#ffffff" stroke-opacity="0.06" stroke-width="1">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+    <line x1="800" y1="0" x2="800" y2="500"/>
+    <line x1="1000" y1="0" x2="1000" y2="500"/>
+  </g>
+  <text x="60" y="160" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="800" fill="#fdf6ec">AppFilmBar</text>
+  <text x="60" y="205" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#f0a45a">A simulation app for films</text>
+
+  <!-- phone mockups -->
+  <g transform="translate(620,90)">
+    <rect x="0" y="0" width="180" height="320" rx="22" fill="#0c1c28" stroke="#3a4a55" stroke-width="2"/>
+    <rect x="10" y="14" width="160" height="190" rx="6" fill="url(#oceanGrad)"/>
+    <circle cx="120" cy="60" r="34" fill="#e8f1f7" opacity="0.85"/>
+    <rect x="20" y="220" width="140" height="10" rx="5" fill="#3a4a55"/>
+    <rect x="20" y="240" width="100" height="8" rx="4" fill="#27343d"/>
+    <rect x="20" y="258" width="120" height="8" rx="4" fill="#27343d"/>
+    <rect x="20" y="276" width="80" height="8" rx="4" fill="#27343d"/>
+  </g>
+  <g transform="translate(840,40)">
+    <rect x="0" y="0" width="180" height="320" rx="22" fill="#10222f" stroke="#3a4a55" stroke-width="2"/>
+    <rect x="10" y="14" width="160" height="190" rx="6" fill="url(#oceanGrad)"/>
+    <rect x="20" y="220" width="60" height="10" rx="5" fill="#3a4a55"/>
+    <rect x="20" y="240" width="140" height="8" rx="4" fill="#27343d"/>
+    <rect x="20" y="258" width="110" height="8" rx="4" fill="#27343d"/>
+    <rect x="20" y="276" width="130" height="8" rx="4" fill="#27343d"/>
+    <circle cx="155" cy="226" r="8" fill="#f0a45a"/>
+  </g>
+</svg>
