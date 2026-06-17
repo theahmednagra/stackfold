@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { registerUserSchema } from "@/schemas/registerUserSchema";
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/lib/db";
 import { User } from "@/models/User.models";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";

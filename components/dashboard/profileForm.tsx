@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileFormSchema, ProfileFormValues } from "@/schemas/profileSchema";
 
 interface ProfileFormProps {
-  initialData?: Partial<ProfileFormValues>;
+  initialData?: Partial<ProfileFormValues> | null;
 }
 
 export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+
+  // Determine if we are updating or creating for the first time
+  const isExistingProfile = !!initialData?.fullname;
 
   const {
     register,
@@ -26,38 +29,49 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
       description: "",
       contact: "",
       endNote: "",
-      socials: { github: "", linkedin: "", twitter: "" },
+      socialLinks: { github: "", linkedin: "", twitter: "" },
     },
   });
+
+  // Keep form fields synced if initialData fetches/hydrates late from the server component
+  useEffect(() => {
+    if (initialData) {
+      reset(initialData);
+    }
+  }, [initialData, reset]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     setIsSubmitting(true);
     setApiError(null);
-
-    // UX Data Transformation: Map structured object into the generic string[] array the Mongoose schema expects
-    const filteredSocials = Object.values(data.socials).filter(Boolean);
 
     const payload = {
       fullname: data.fullname,
       bio: data.bio,
       description: data.description,
       contact: data.contact,
-      endNote: data.endNote || undefined,
-      socialLinks: filteredSocials, // Matches your Mongoose string[] model
+      endNote: data.endNote || "",
+      socialLinks: {
+        github: data.socialLinks?.github || "",
+        linkedin: data.socialLinks?.linkedin || "",
+        twitter: data.socialLinks?.twitter || "",
+      },
     };
 
     try {
       const response = await fetch("/api/profile", {
-        method: "PUT",
+        method: "PUT", // Updated to PUT to match our idempotent upsert architecture
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Failed to update profile data.");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to save profile changes.");
+      }
 
-      // Reset form state to pristine with the freshly saved values
+      // Reset form status to pristine using the current user entries
       reset(data);
-      alert("Profile updated successfully!");
+      alert(isExistingProfile ? "Changes saved successfully!" : "Profile created successfully!");
     } catch (error: any) {
       setApiError(error.message || "Something went wrong.");
     } finally {
@@ -68,8 +82,12 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-2xl bg-white p-6 rounded-lg shadow-sm">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Core Profile</h2>
-        <p className="text-sm text-gray-500">This information will populate your portfolio landing section.</p>
+        <h2 className="text-xl font-semibold text-gray-900">
+          {isExistingProfile ? "Edit Profile Settings" : "Setup Core Profile"}
+        </h2>
+        <p className="text-sm text-gray-500">
+          This information will populate your personal portfolio landing section.
+        </p>
       </div>
 
       {apiError && (
@@ -83,7 +101,8 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
         <label className="text-sm font-medium text-gray-700">Full Name</label>
         <input
           {...register("fullname")}
-          className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${errors.fullname ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+          className={`p-2 border text-gray-700 rounded-md focus:outline-none focus:ring-2 ${errors.fullname ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+            }`}
           placeholder="John Doe"
         />
         {errors.fullname && <p className="text-xs text-red-500">{errors.fullname.message}</p>}
@@ -94,7 +113,8 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
         <label className="text-sm font-medium text-gray-700">Tagline / Bio</label>
         <input
           {...register("bio")}
-          className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${errors.bio ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+          className={`p-2 border text-gray-700 rounded-md focus:outline-none focus:ring-2 ${errors.bio ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+            }`}
           placeholder="Building scalable web experiences."
         />
         {errors.bio && <p className="text-xs text-red-500">{errors.bio.message}</p>}
@@ -106,7 +126,8 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
         <textarea
           {...register("description")}
           rows={4}
-          className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${errors.description ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+          className={`p-2 border text-gray-700 rounded-md focus:outline-none focus:ring-2 ${errors.description ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+            }`}
           placeholder="Write a comprehensive overview of your skills and history..."
         />
         {errors.description && <p className="text-xs text-red-500">{errors.description.message}</p>}
@@ -118,7 +139,8 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
         <input
           {...register("contact")}
           type="email"
-          className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${errors.contact ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+          className={`p-2 border text-gray-700 rounded-md focus:outline-none focus:ring-2 ${errors.contact ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+            }`}
           placeholder="hello@yourdomain.com"
         />
         {errors.contact && <p className="text-xs text-red-500">{errors.contact.message}</p>}
@@ -131,7 +153,7 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
         </label>
         <input
           {...register("endNote")}
-          className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${errors.endNote ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+          className={`p-2 border text-gray-700 rounded-md focus:outline-none focus:ring-2 ${errors.endNote ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
             }`}
           placeholder="Thanks for visiting my portfolio!"
         />
@@ -150,33 +172,36 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600">GitHub URL</label>
             <input
-              {...register("socials.github")}
-              className={`p-2 border text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socials?.github ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+              {...register("socialLinks.github")}
+              className={`p-2 border text-gray-700 text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socialLinks?.github ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+                }`}
               placeholder="https://github.com/username"
             />
-            {errors.socials?.github && <p className="text-xs text-red-500">{errors.socials.github.message}</p>}
+            {errors.socialLinks?.github && <p className="text-xs text-red-500">{errors.socialLinks.github.message}</p>}
           </div>
 
           {/* LinkedIn */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600">LinkedIn URL</label>
             <input
-              {...register("socials.linkedin")}
-              className={`p-2 border text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socials?.linkedin ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+              {...register("socialLinks.linkedin")}
+              className={`p-2 border text-gray-700 text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socialLinks?.linkedin ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+                }`}
               placeholder="https://linkedin.com/in/username"
             />
-            {errors.socials?.linkedin && <p className="text-xs text-red-500">{errors.socials.linkedin.message}</p>}
+            {errors.socialLinks?.linkedin && <p className="text-xs text-red-500">{errors.socialLinks.linkedin.message}</p>}
           </div>
 
           {/* Twitter */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600">Twitter URL</label>
             <input
-              {...register("socials.twitter")}
-              className={`p-2 border text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socials?.twitter ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"}`}
+              {...register("socialLinks.twitter")}
+              className={`p-2 border text-gray-700 text-sm rounded-md focus:outline-none focus:ring-2 ${errors.socialLinks?.twitter ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-200"
+                }`}
               placeholder="https://twitter.com/username"
             />
-            {errors.socials?.twitter && <p className="text-xs text-red-500">{errors.socials.twitter.message}</p>}
+            {errors.socialLinks?.twitter && <p className="text-xs text-red-500">{errors.socialLinks.twitter.message}</p>}
           </div>
         </div>
       </div>
@@ -192,7 +217,7 @@ export default function ProfileInfoForm({ initialData }: ProfileFormProps) {
               : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-sm"
             }`}
         >
-          {isSubmitting ? "Saving changes..." : "Save Profile"}
+          {isSubmitting ? "Saving changes..." : isExistingProfile ? "Save Changes" : "Create Profile"}
         </button>
       </div>
     </form>

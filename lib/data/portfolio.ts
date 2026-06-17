@@ -219,7 +219,7 @@ export const portfolios: Record<string, PortfolioData> = {
         tagline:
           "A company specializing in AI-driven custom software development solutions",
         description: [
-          "LogicLeaps is a software studio focused on building AI-driven, custom software solutions for ambitious businesses — from early-stage MVPs to scaled production platforms.",
+          "LogicLeaps is a software studio focused on building AI-driven, custom software solutions for ambitious businesses - from early-stage MVPs to scaled production platforms.",
           "We believe in Innovate, Integrate and Elevate: combining modern engineering practices with applied AI to help teams ship faster, automate manual work, and make better decisions with their data.",
         ],
         coverImage: "/projects/logicleaps-cover.svg",

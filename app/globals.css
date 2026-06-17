@@ -1,25 +1,92 @@
 @import "tailwindcss";
 
-:root {
-  --background: #000000;
-  --foreground: #f4f4f5;
+* {
+  font-family: "Sen", sans-serif;
 }
 
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-120%) scaleX(0.3);
+    opacity: 0.6;
+  }
+  20% {
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(20%) scaleX(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%) scaleX(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes loading-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.6s cubic-bezier(0.4, 0, 0.15, 1) infinite;
+  width: 100%;
+  transform-origin: left center;
+}
+
+.animate-loading-glow {
+  animation: loading-glow 1.6s cubic-bezier(0.4, 0, 0.15, 1) infinite;
+}
+
+/* ================= ⚡ TAILWIND V4 INLINE VARIABLE REGISTRATION ================= */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
-    monospace;
+  --color-portfolio-bg: var(--bg);
+  --color-portfolio-text: var(--text);
+  --color-portfolio-card: var(--card);
+  --color-portfolio-border: var(--border);
+  --color-portfolio-accent: var(--accent);
+  --color-portfolio-muted: var(--muted);
+  --color-portfolio-glow: var(--glow);
 }
 
-html {
-  background-color: var(--background);
-  color-scheme: dark;
+/* ================= 🌑 THEME 1: ONYX OBSCURE (Definitive Dark Mode Base) ================= */
+:root,
+[data-theme="default-dark"] {
+  --bg: #030303; /* Pure deep onyx void */
+  --text: #ffffff; /* Ultra-crisp clear reading white */
+  --card: rgba(18, 18, 18, 0.45); /* Elevated component surfaces */
+  --border: rgba(255, 255, 255, 0.055); /* Microscopic single-pixel borders */
+  --accent: #22c55e; /* High-intensity focus green */
+  --muted: #94a3b8; /* Calibrated slate text descriptions */
+  --glow: rgba(34, 197, 94, 0.07); /* Smooth atmospheric backlighting */
 }
 
+/* ================= ☀️ THEME 2: GRAPHITE CHARTA (Definitive Light Mode Override) ================= */
+[data-theme="default-light"] {
+  --bg: #f8f8fa; /* Clean architectural paper tone */
+  --text: #09090b; /* Dense charcoal printing ink */
+  --card: rgba(255, 255, 255, 0.75); /* Pure crisp surface overlays */
+  --border: rgba(0, 0, 0, 0.055); /* Super-clean contrast separators */
+  --accent: #2563eb; /* Electric high-legibility royal blue */
+  --muted: #52525b; /* Deep mid-tone text descriptions */
+  --glow: rgba(37, 99, 235, 0.03); /* Clean royal sapphire spotlight bleed */
+}
+
+/* ================= SYSTEM LAYOUT RESETS ================= */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg);
+  color: var(--text);
+
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition:
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -4,6 +4,7 @@ export interface IInfo extends Document {
     userId: Types.ObjectId;
 
     fullname: string;
+    username: string;
     bio: string;
     description: string;
 
@@ -15,7 +16,7 @@ export interface IInfo extends Document {
     themeId: string;
 
     projects: Types.ObjectId[];
-    experience: Types.ObjectId[];
+    experiences: Types.ObjectId[];
 }
 
 const InfoSchema = new Schema<IInfo>(
@@ -27,6 +28,15 @@ const InfoSchema = new Schema<IInfo>(
             unique: true,
             index: true,
         },
+
+        // username: {
+        //     type: String,
+        //     required: true,
+        //     unique: true,
+        //     lowercase: true,
+        //     trim: true,
+        //     index: true
+        // },
 
         fullname: { type: String, required: true },
         bio: { type: String, required: true },
@@ -44,6 +54,11 @@ const InfoSchema = new Schema<IInfo>(
 
         endNote: String,
 
+        themeId: {
+            type: String,
+            default: "default-theme",
+        },
+
         projects: [
             {
                 type: Schema.Types.ObjectId,
@@ -51,7 +66,7 @@ const InfoSchema = new Schema<IInfo>(
             },
         ],
 
-        experience: [
+        experiences: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Experience",

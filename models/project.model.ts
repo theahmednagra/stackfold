@@ -16,8 +16,6 @@ export interface IProject extends Document {
 
     techStack: string[];
     features: string[];
-
-    order: number;
 }
 
 const ProjectSchema = new Schema<IProject>(
@@ -35,7 +33,9 @@ const ProjectSchema = new Schema<IProject>(
 
         description: { type: String, required: true },
 
+        iconUrl: String,
         imageUrl: String,
+
         projectUrl: String,
         githubUrl: String,
 
@@ -47,13 +47,7 @@ const ProjectSchema = new Schema<IProject>(
         features: {
             type: [String],
             default: [],
-        },
-
-        order: {
-            type: Number,
-            default: 0,
-            index: true,
-        },
+        }
     },
     {
         timestamps: true,

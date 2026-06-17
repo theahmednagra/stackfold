@@ -29,8 +29,8 @@ export const projectFormSchema = z.object({
         .min(20, "Please write a descriptive overview of what you built."),
 
     // Accept either a new File upload or a previously saved secure string URL
-    imageFile: fileValidation.or(z.string().url()).optional(),
-    iconFile: fileValidation.or(z.string().url()).optional(),
+    imageFile: fileValidation.or(z.string().url()).or(z.literal("")).optional(),
+    iconFile: fileValidation.or(z.string().url()).or(z.literal("")).optional(),
 
     projectUrl: z
         .string()

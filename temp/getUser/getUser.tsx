@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { User } from "@/models/User.models";
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/lib/db";
 
 // Helper to get authenticated user from JWT token
 export async function getAuthenticatedUser() {

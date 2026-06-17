@@ -30,7 +30,7 @@ export const profileFormSchema = z.object({
         .or(z.literal("")), // Allows empty string instead of failing on optional
 
     // Structured fields for the UI layer
-    socials: z.object({
+    socialLinks: z.object({
         github: z
             .string()
             .url("Please enter a valid GitHub URL.")

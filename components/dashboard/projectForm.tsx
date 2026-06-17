@@ -68,39 +68,47 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
     const onSubmit = async (data: ProjectFormValues) => {
         setIsSubmitting(true);
 
-        // Create a multi-part form data instance to ship binary files + fields
         const formData = new FormData();
+
+        // If updating, inject the internal MongoDB document ID parameter context 
+        if (initialData?._id) {
+            formData.append("_id", initialData._id);
+        }
+
         formData.append("title", data.title);
         formData.append("tagline", data.tagline);
         formData.append("description", data.description);
         formData.append("projectUrl", data.projectUrl || "");
         formData.append("githubUrl", data.githubUrl || "");
-
-        // 1. Tech Stack Transformation (Sent as stringified array)
         formData.append("techStack", JSON.stringify(data.techStack));
 
-        // 2. Features Transformation: Map array of objects to clean array of strings
         const flattenedFeatures = data.features.map((f) => f.text);
         formData.append("features", JSON.stringify(flattenedFeatures));
 
-        // 3. File attachments passed directly to backend file upload system
-        if (data.imageFile instanceof File) formData.append("imageFile", data.imageFile);
-        if (data.iconFile instanceof File) formData.append("iconFile", data.iconFile);
+        // Handle binary files vs persistent raw URLs strings
+        if (data.imageFile instanceof File) {
+            formData.append("imageFile", data.imageFile);
+        } else if (typeof data.imageFile === "string") {
+            formData.append("imageFile", data.imageFile);
+        }
+
+        if (data.iconFile instanceof File) {
+            formData.append("iconFile", data.iconFile);
+        } else if (typeof data.iconFile === "string") {
+            formData.append("iconFile", data.iconFile);
+        }
 
         try {
             const response = await fetch("/api/projects", {
-                method: "POST", // or PUT if initialData exists
-                body: formData, // Do not set content-type header, browser sets multi-part automatically
+                // Dynamically select PUT for updates, POST for fresh entries
+                method: initialData?._id ? "PUT" : "POST",
+                body: formData,
             });
 
-            if (!response.ok) throw new Error("Failed to save project.");
+            if (!response.ok) throw new Error("Failed to save project document properties.");
 
-            alert("Project saved successfully!");
+            alert(initialData?._id ? "Project updated successfully!" : "Project created successfully!");
             reset(data);
-
-            if (iconInputRef.current) iconInputRef.current.value = "";
-            if (imageInputRef.current) imageInputRef.current.value = "";
-            
         } catch (error) {
             console.error(error);
         } finally {
@@ -120,7 +128,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                 <label className="text-sm font-medium text-gray-700">Project Title</label>
                 <input
                     {...register("title")}
-                    className="p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    className="p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
                     placeholder="E-Commerce API Dashboard"
                 />
                 {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
@@ -131,7 +139,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                 <label className="text-sm font-medium text-gray-700">Tagline</label>
                 <input
                     {...register("tagline")}
-                    className="p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    className="p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
                     placeholder="A minimal, lightning-fast dashboard built for developers."
                 />
                 {errors.tagline && <p className="text-xs text-red-500">{errors.tagline.message}</p>}
@@ -143,7 +151,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                 <textarea
                     {...register("description")}
                     rows={5}
-                    className="p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    className="p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
                     placeholder="Provide a comprehensive breakdown of the project architecture, features, and target audience..."
                 />
                 {errors.description && <p className="text-xs text-red-500">{errors.description.message}</p>}
@@ -223,7 +231,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                     <input
                         {...register("projectUrl")}
                         type="url"
-                        className="p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
+                        className="p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
                         placeholder="https://myproject.com"
                     />
                     {errors.projectUrl && <p className="text-xs text-red-500">{errors.projectUrl.message}</p>}
@@ -234,7 +242,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                     <input
                         {...register("githubUrl")}
                         type="url"
-                        className="p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
+                        className="p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
                         placeholder="https://github.com/user/repo"
                     />
                     {errors.githubUrl && <p className="text-xs text-red-500">{errors.githubUrl.message}</p>}
@@ -244,7 +252,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
             {/* Tech Stack Tags Module */}
             <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-700">Technologies Used</label>
-                <div className="flex flex-wrap gap-2 p-2 border rounded-md border-gray-300 bg-gray-50 min-h-10.5">
+                <div className="flex flex-wrap gap-2 p-2 border text-gray-700 rounded-md border-gray-300 bg-gray-50 min-h-10.5">
                     {currentTechStack.map((tech, idx) => (
                         <span key={idx} className="flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded">
                             {tech}
@@ -270,7 +278,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                         <input
                             {...register(`features.${index}.text` as const)}
                             placeholder="Integrated stripe webhooks for transactional events..."
-                            className="flex-1 p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
+                            className="flex-1 p-2 border text-gray-700 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm"
                         />
                         {fields.length > 1 && (
                             <button type="button" onClick={() => remove(index)} className="text-red-500 text-sm font-medium hover:underline px-1">

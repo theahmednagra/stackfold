@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { generateVerificationData } from "@/utils/generateVerificationData";
-import { connectToDatabase } from "@/lib/db/dbConnect" // Path to your Mongoose connection utility
+import { connectToDatabase } from "@/lib/db" // Path to your Mongoose connection utility
 import { User } from "@/models/user.model"; // Path to your Mongoose User model
 import { authFormSchema } from "@/schemas/authSchema"; // Reusing our Zod schema
-import { sendVerificationEmail } from "@/lib/services/email.service";
+import { sendVerificationEmail } from "@/services/email.service";
 
 export async function POST(req: NextRequest) {
     try {

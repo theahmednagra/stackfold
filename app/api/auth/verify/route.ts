@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { connectToDatabase } from "@/lib/db/dbConnect";
+import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
 import { authFormSchema } from "@/schemas/authSchema";
 
@@ -10,8 +10,6 @@ export async function POST(req: NextRequest) {
         await connectToDatabase();
 
         const body = await req.json();
-
-        console.log(body)
 
         // 1. Validate payload structure using our shared Zod schema
         const validation = authFormSchema.safeParse({ ...body });

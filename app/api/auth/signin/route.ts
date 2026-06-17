@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { connectToDatabase } from "@/lib/db/dbConnect";
+import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
 import { authFormSchema } from "@/schemas/authSchema";
 

@@ -3,7 +3,7 @@ import { loginUserSchema } from "@/schemas/loginUserSchema";
 import { User } from "@/models/User.models";
 import bcrypt from "bcryptjs";
 import { ZodError } from "zod";
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/lib/db";
 import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
