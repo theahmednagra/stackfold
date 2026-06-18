@@ -14,6 +14,10 @@ import FeaturedProjects from "@/components/portfolio/featured-projects";
 import ContactSection from "@/components/portfolio/contact-section";
 import SystemFooter from "@/components/portfolio/system-footer";
 
+// For Analytics
+import AnalyticsTracker from "@/components/portfolio/analytics-tracker";
+import { verifySession } from "@/lib/authGuard";
+
 interface Props {
   params: Promise<{ username: string }>;
 }
@@ -28,17 +32,25 @@ export default async function PublicPortfolioPage({ params }: Props) {
 
   const { userAccount, profile } = data;
 
-  // Perform parallel, highly efficient database reads if profile documents exist
+  // Fire all database reads and the session check in parallel
   await connectToDatabase();
-  const [projects, experiences] = profile
-    ? await Promise.all([
-      Project.find({ infoId: profile._id }).sort({ createdAt: -1 }).limit(3),
-      Experience.find({ infoId: profile._id }).sort({ startDate: -1 }),
-    ])
-    : [[], []];
+
+  const [projects, experiences, session] = await Promise.all([
+    profile ? Project.find({ infoId: profile._id }).sort({ createdAt: -1 }).limit(3) : [],
+    profile ? Experience.find({ infoId: profile._id }).sort({ startDate: -1 }) : [],
+    verifySession().catch(() => null) // Catch error silently if visitor is logged out [Analytics]
+  ]);
+
+  // Check if the logged-in visitor is the portfolio owner [Analytics]
+  const isOwner = session && session.userId === profile?.userId?.toString();
 
   return (
     <div className="w-full flex flex-col items-center">
+      {/* Only track if it's a real visitor, completely asynchronous [Analytics] */}
+      {!isOwner && profile?.userId && (
+        <AnalyticsTracker ownerId={profile.userId.toString()} />
+      )}
+
       {/* ================= CONTEXTUAL SMART BREADCRUMB HEADER ================= */}
       <NavHeader fullname={profile?.fullname} username={username} />
 

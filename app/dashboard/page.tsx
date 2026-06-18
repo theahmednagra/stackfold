@@ -1,113 +1,316 @@
+"use client";
 
-
-import { redirect } from "next/navigation";
+import { useProgressNavigation } from "@/components/portfolio/progress-provider";
 import Link from "next/link";
-import { connectToDatabase } from "@/lib/db";
-import { User } from "@/models/user.model";
-import { Info } from "@/models/info.model";
-import { Project } from "@/models/project.model";
-import { Experience } from "@/models/experience.model";
+import React, { useState, useEffect } from "react";
+import {
+  FiLayers,
+  FiBriefcase,
+  FiLink2,
+  FiEye,
+  FiTrendingUp,
+  FiMapPin,
+  FiAlertTriangle,
+  FiArrowUpRight,
+  FiTerminal,
+  FiCheckCircle,
+  FiBarChart2,
+} from "react-icons/fi";
 
-export default async function DashboardPage() {
+interface OverviewData {
+  profile: {
+    id: string | null;
+    fullname: string;
+    bio: string;
+    activeTheme: string;
+  };
+  counters: {
+    projects: number;
+    experiences: number;
+    socials: number;
+  };
+  metrics: {
+    allTimeViews: number;
+    weeklyVelocity: number;
+    topDistribution: { _id: string; count: number }[];
+  };
+  previewList: { title: string; techStack: string[]; slug: string }[];
+}
 
-  await connectToDatabase();
+const StatCard = ({
+  label,
+  value,
+  icon: Icon,
+}: {
+  label: string;
+  value: number;
+  icon: React.ElementType;
+}) => (
+  <div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl p-5 flex items-center justify-between group hover:border-portfolio-accent/40 transition-colors duration-200">
+    <div className="space-y-1">
+      <p className="text-[11px] font-semibold uppercase tracking-widest text-portfolio-muted/60">
+        {label}
+      </p>
+      <p className="text-3xl font-semibold text-portfolio-text font-mono leading-none">
+        {value}
+      </p>
+    </div>
+    <div className="w-10 h-10 rounded-xl bg-portfolio-bg border border-portfolio-border/50 flex items-center justify-center text-portfolio-muted group-hover:text-portfolio-accent transition-colors duration-200">
+      <Icon size={16} />
+    </div>
+  </div>
+);
 
-  const username = "ahmed3"
+export default function OverviewDashboard() {
+  const [data, setData] = useState<OverviewData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // 2. Fetch authenticated account context data safely
-  const userAccount = await User.findOne({ username: username }).select("_id username");
-  if (!userAccount) redirect("/login");
+  const navigate = useProgressNavigation()
 
-  // 3. Locate the relational metadata card model profile link
-  const profile = await Info.findOne({ userId: userAccount._id });
+  useEffect(() => {
+    fetch("/api/overview")
+      .then((res) => {
+        if (!res.ok) throw new Error("Could not load dashboard data.");
+        return res.json();
+      })
+      .then((payload) => {
+        setData(payload);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
-  // Base numbers setup fallback if profile hasn't been instantiated yet
-  let projectCount = 0;
-  let experienceCount = 0;
-
-  if (profile) {
-    [projectCount, experienceCount] = await Promise.all([
-      Project.countDocuments({ infoId: profile._id }),
-      Experience.countDocuments({ infoId: profile._id }),
-    ]);
+  if (loading) {
+    return (
+      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-5 animate-pulse">
+        <div className="h-22 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-22 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl"
+            />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="md:col-span-2 h-72 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
+          <div className="h-72 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
+        </div>
+      </div>
+    );
   }
 
+  if (error || !data) {
+    return (
+      <div className="w-full max-w-5xl mx-auto p-6 py-24 text-center">
+        <div className="w-10 h-10 rounded-xl bg-red-950/20 border border-red-900/30 flex items-center justify-center mx-auto text-red-400 mb-4">
+          <FiAlertTriangle size={16} />
+        </div>
+        <p className="text-[14px] font-semibold text-portfolio-text">
+          Failed to load
+        </p>
+        <p className="text-[13px] text-portfolio-muted mt-1 max-w-xs mx-auto">
+          {error ?? "Something went wrong fetching your dashboard."}
+        </p>
+      </div>
+    );
+  }
+
+  const maxCount = Math.max(
+    ...data.metrics.topDistribution.map((c) => c.count),
+    1
+  );
+
   return (
-    <div className="min-h-screen bg-[#050506] text-[#f4f4f5] antialiased">
-      {/* Sidebar Navigation Layout Wrapper */}
-      <div className="flex h-screen overflow-hidden">
+    <div className="w-full max-w-5xl mx-auto space-y-5 p-4 sm:p-6">
 
-        {/* SIDEBAR BLOCK */}
-        <aside className="w-64 border-r border-[#1e1e24] bg-[#0c0c0e] p-6 hidden md:flex flex-col justify-between">
-          <div className="space-y-8">
-            <div className="font-black tracking-tight text-lg text-blue-500">
-              stackfold<span className="text-xs text-[#8e8e9f] font-mono">.panel</span>
-            </div>
-            <nav className="space-y-1.5 font-mono text-xs font-bold uppercase tracking-wider">
-              <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#1e1e24] text-[#f4f4f5]">
-                ■ Overview
-              </Link>
-              <Link href="/dashboard/profile" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#8e8e9f] hover:text-[#f4f4f5] hover:bg-[#1e1e24]/40 transition-all">
-                □ Profile Data
-              </Link>
-              <Link href="/dashboard/projects" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#8e8e9f] hover:text-[#f4f4f5] hover:bg-[#1e1e24]/40 transition-all">
-                □ Manage Projects
-              </Link>
-              <Link href="/dashboard/experience" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[#8e8e9f] hover:text-[#f4f4f5] hover:bg-[#1e1e24]/40 transition-all">
-                □ Career Nodes
-              </Link>
-            </nav>
-          </div>
+      {/* ── Identity banner ── */}
+      <div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+        {/* Subtle top line accent */}
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/30 to-transparent" />
 
-          {/* User Account Quick Link footer anchor */}
-          <div className="pt-4 border-t border-[#1e1e24] flex items-center justify-between text-xs">
-            <span className="font-mono text-[#8e8e9f]">@{userAccount.username}</span>
-            <a href={`/${userAccount.username}`} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">
-              Live Site ↗
-            </a>
-          </div>
-        </aside>
+        <div className="space-y-1 min-w-0">
+          <h1 className="text-2xl font-bold text-portfolio-text tracking-tight truncate">
+            {data.profile.fullname}
+          </h1>
+          <p className="text-[14px] text-portfolio-muted leading-relaxed max-w-xl">
+            {data.profile.bio}
+          </p>
+        </div>
 
-        {/* MAIN PANEL AREA */}
-        <main className="flex-1 overflow-y-auto p-8 sm:p-12 space-y-10">
+        <div className="shrink-0 flex items-center gap-2 bg-portfolio-bg border border-portfolio-border/50 px-3 py-1.5 rounded-xl">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[11.5px] font-mono text-portfolio-muted">
+            theme:{" "}
+            <span className="text-portfolio-text font-semibold">
+              {data.profile.activeTheme}
+            </span>
+          </span>
+        </div>
+      </div>
 
-          {/* TOP ADMINISTRATIVE APP HEADER WELCOME */}
-          <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1e1e24]/60 pb-6">
-            <div>
-              <h1 className="text-3xl font-black tracking-tight">Command Center</h1>
-              <p className="text-sm text-[#8e8e9f] mt-0.5">Control data points and active themes engine parameters easily.</p>
-            </div>
-            <Link href="/dashboard/profile" className="h-9 px-4 rounded-lg bg-blue-600 text-xs font-bold text-white flex items-center justify-center hover:bg-blue-500 transition-colors shadow-sm self-start sm:self-auto">
-              Edit Live Profile
-            </Link>
-          </header>
+      {/* ── Counter row ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatCard label="Projects" value={data.counters.projects} icon={FiLayers} />
+        <StatCard label="Experience" value={data.counters.experiences} icon={FiBriefcase} />
+        <StatCard label="Linked accounts" value={data.counters.socials} icon={FiLink2} />
+      </div>
 
-          {/* DYNAMIC METRIC CARDS TRACKING ROW GRID */}
-          <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 border border-[#1e1e24] bg-[#0c0c0e] rounded-xl space-y-1">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#8e8e9f]">Active Projects</span>
-              <p className="text-3xl font-black text-[#f4f4f5]">{projectCount}</p>
-            </div>
-            <div className="p-5 border border-[#1e1e24] bg-[#0c0c0e] rounded-xl space-y-1">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#8e8e9f]">Timeline Nodes</span>
-              <p className="text-3xl font-black text-[#f4f4f5]">{experienceCount}</p>
-            </div>
-            <div className="p-5 border border-[#1e1e24] bg-[#0c0c0e] rounded-xl space-y-1">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#8e8e9f]">Theme Engine Configuration</span>
-              <p className="text-sm font-mono font-bold text-emerald-400 pt-2 truncate uppercase tracking-wide">
-                {profile?.theme || "default-dark"}
+      {/* ── Main panels ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        {/* Projects list */}
+        <div className="md:col-span-2 bg-portfolio-card border border-portfolio-border/70 rounded-2xl p-5 sm:p-6 flex flex-col gap-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <FiTerminal size={16} className="text-portfolio-accent" />
+                <h2 className="text-[15px] font-bold text-portfolio-text tracking-tight">
+                  Recent projects
+                </h2>
+              </div>
+              <p className="text-[12.5px] text-portfolio-muted pl-5.5">
+                Latest builds in your portfolio
               </p>
             </div>
-          </section>
+            <Link
+              href="/dashboard/portfolio"
+              className="shrink-0 flex items-center gap-1 text-[13px] font-medium text-portfolio-accent hover:underline underline-offset-2 transition"
+            >
+              View all <FiArrowUpRight size={16} />
+            </Link>
+          </div>
 
-          {/* QUICK INITIALIZATION PROFILE CHECK WARNING */}
-          {!profile && (
-            <div className="p-5 border border-amber-500/20 bg-amber-500/5 rounded-xl text-sm text-amber-200/80 leading-relaxed">
-              <strong>Initialization Action Required:</strong> No profile configuration record dataset was located linked to this authentication instance identifier. Please navigate to the Profile Control center to synchronize data.
+          <div className="space-y-2.5">
+            {data.previewList.length === 0 ? (
+              <div className="py-10 text-center text-[13px] text-portfolio-muted border border-dashed border-portfolio-border/60 rounded-xl">
+                No projects added yet.
+              </div>
+            ) : (
+              data.previewList.map((project, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between gap-4 px-4 py-3 bg-portfolio-bg/50 border border-portfolio-border/40 rounded-xl hover:border-portfolio-border/70 transition-colors duration-150 group"
+                >
+                  <div className="min-w-0 space-y-1.5">
+                    <p className="text-[13.5px] font-semibold text-portfolio-text truncate">
+                      {project.title}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techStack.slice(0, 4).map((tech, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-portfolio-card border border-portfolio-border/60 text-portfolio-muted"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 flex items-center gap-1.5 text-[11.5px] font-mono text-emerald-500 bg-emerald-500/8 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                    <FiCheckCircle size={12} />
+                    Live
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Traffic panel */}
+        <div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl p-5 sm:p-6 flex flex-col gap-5">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2">
+              <FiBarChart2 size={16} className="text-portfolio-accent" />
+              <h2 className="text-[15px] font-bold text-portfolio-text tracking-tight">
+                Traffic
+              </h2>
             </div>
-          )}
+            <p className="text-[12.5px] text-portfolio-muted pl-5.5">
+              Visitor overview
+            </p>
+          </div>
 
-        </main>
+          {/* Metric pair */}
+          <div className="grid grid-cols-2 gap-2.5">
+            <div className="bg-portfolio-bg border border-portfolio-border/40 rounded-xl p-3 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-portfolio-muted">
+                <FiEye size={12} />
+                <span className="text-[10px] font-bold uppercase tracking-widest">
+                  All time
+                </span>
+              </div>
+              <p className="text-[22px] font-semibold font-mono text-portfolio-text leading-none">
+                {data.metrics.allTimeViews.toLocaleString()}
+              </p>
+            </div>
+            <div className="bg-portfolio-bg border border-portfolio-border/40 rounded-xl p-3 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-portfolio-accent">
+                <FiTrendingUp size={12} />
+                <span className="text-[10px] font-bold uppercase tracking-widest">
+                  7 days
+                </span>
+              </div>
+              <p className="text-[22px] font-semibold font-mono text-portfolio-accent leading-none">
+                {data.metrics.weeklyVelocity.toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          {/* Geography */}
+          <div className="space-y-3 flex-1">
+            <div className="flex items-center gap-1.5 text-portfolio-muted">
+              <FiMapPin size={11} />
+              <p className="text-[10px] font-semibold uppercase tracking-widest">
+                Top locations
+              </p>
+            </div>
+
+            {data.metrics.topDistribution.length === 0 ? (
+              <p className="text-[12.5px] text-portfolio-muted italic">
+                No location data yet.
+              </p>
+            ) : (
+              data.metrics.topDistribution.slice(0, 3).map((c, cIdx) => {
+                const pct = Math.min(
+                  Math.max((c.count / maxCount) * 100, 5),
+                  100
+                );
+                return (
+                  <div key={cIdx} className="space-y-1.5">
+                    <div className="flex justify-between text-[12px]">
+                      <span className="font-medium text-portfolio-text truncate max-w-30">
+                        {c._id === "Unknown" ? "Unknown" : c._id}
+                      </span>
+                      <span className="font-mono text-portfolio-muted tabular-nums">
+                        {c.count.toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="h-1 w-full bg-portfolio-bg rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-portfolio-accent rounded-full transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          <Link
+            href="/dashboard/analytics"
+            className="mt-auto w-full h-9 flex items-center justify-center gap-1.5 bg-portfolio-text text-portfolio-bg text-[12.5px] font-semibold rounded-xl hover:bg-portfolio-text/90 transition-colors duration-150"
+          >
+            Full analytics <FiArrowUpRight size={13} />
+          </Link>
+        </div>
+
       </div>
     </div>
   );

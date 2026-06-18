@@ -16,10 +16,11 @@ export async function GET(req: NextRequest) {
     try {
         const session = await verifySession();
         await connectToDatabase();
-
+        
+        // If the profile doesn't exist yet, they can't have projects. Return an empty array cleanly.
         const userProfile = await Info.findOne({ userId: session.userId });
         if (!userProfile) {
-            return NextResponse.json({ message: "Core profile context not found." }, { status: 404 });
+            return NextResponse.json({ projects: [] }, { status: 200 });
         }
 
         const projects = await Project.find({ infoId: userProfile._id }).sort({ createdAt: -1 });

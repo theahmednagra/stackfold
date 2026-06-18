@@ -1,5 +1,6 @@
-import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
+import { ThemeProvider } from "@/context/global-theme-context";
+import { ToastProvider } from "@/context/toast-context";
 
 export default function RootLayout({
   children,
@@ -7,19 +8,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" data-theme="default-light">
+    <html lang="en" className="h-full">
       <head>
-        <title>My App</title>
+        <title>Dynamic Portfolio Builder</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full bg-black font-sans text-zinc-100 antialiased relative">
-        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 right-0 h-120 w-120 rounded-full bg-emerald-500/10 blur-[140px]" />
-        </div>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className="min-h-full bg-portfolio-bg text-portfolio-text font-sans antialiased relative transition-colors duration-200">
+        <ThemeProvider>
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
 import { authFormSchema } from "@/schemas/authSchema";
+import { Info } from "@/models/info.model";
 
 export async function POST(req: NextRequest) {
     try {
@@ -64,6 +65,8 @@ export async function POST(req: NextRequest) {
         user.verificationCodeExpiry = undefined;
 
         await user.save();
+
+        await Info.create();
 
         // 7. AUTO-LOGIN: Provision Secure Session JWT
         const secretKey = process.env.JWT_SECRET;

@@ -19,10 +19,20 @@ export async function GET(req: NextRequest) {
         // 2. Fetch the single profile linked to this user
         const profile = await Info.findOne({ userId });
 
+        // If no profile exists, return a 200 status with default empty field parameters
         if (!profile) {
             return NextResponse.json(
-                { message: "No profile information found for this account." },
-                { status: 404 }
+                {
+                    profile: {
+                        fullname: "",
+                        bio: "",
+                        description: "",
+                        contact: "",
+                        endNote: "",
+                        socialLinks: { github: "", linkedin: "", twitter: "" },
+                    },
+                },
+                { status: 200 }
             );
         }
 
@@ -103,7 +113,7 @@ export async function PUT(req: NextRequest) {
                 endNote: endNote || "",
                 socialLinks: flatSocialLinks,
                 // Enforce defaults only if this database write triggers a fresh creation entry
-                $setOnInsert: { themeId: "default-theme", projects: [], experience: [] }
+                $setOnInsert: { theme: "default-dark", projects: [], experience: [] }
             },
             {
                 upsert: true,         // Perform the update or fallback insert automatically

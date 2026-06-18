@@ -82,7 +82,6 @@ export default async function PortfolioLayout({ children, params }: LayoutProps)
   }));
 
   const activeTheme = profile?.theme || "default-dark";
-  // const activeTheme = "default-light";
 
   return (
     <div data-theme={activeTheme}>
@@ -92,7 +91,7 @@ export default async function PortfolioLayout({ children, params }: LayoutProps)
             className="relative min-h-screen bg-portfolio-bg text-portfolio-text antialiased font-sans transition-colors duration-300 flex flex-col items-center w-full"
           >
             {/* 🔍 Global Headless Overlay Command System */}
-            <CommandMenu username={username} projects={optimizedProjects} socials={profile.socialLinks} />
+            <CommandMenu username={username} projects={optimizedProjects} socials={profile?.socialLinks} />
 
             {/* 🔮 Interactive Backdrop Atmospheric Glow Component */}
             <AmbientGlow />

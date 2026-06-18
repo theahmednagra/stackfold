@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
         const userProfile = await Info.findOne({ userId: session.userId });
         if (!userProfile) {
-            return NextResponse.json({ message: "Core profile context not found." }, { status: 404 });
+            return NextResponse.json({ experiences: [] }, { status: 200 });
         }
 
         // Return occupational elements sorted chronologically from newest down to oldest

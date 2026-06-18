@@ -42,6 +42,65 @@
   animation: loading-glow 1.6s cubic-bezier(0.4, 0, 0.15, 1) infinite;
 }
 
+@layer utilities {
+  /* Minimalist Adaptive Custom Scrollbar Engine */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-portfolio-border, rgba(156, 163, 175, 0.25));
+    border-radius: 100px;
+    transition: background-color 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    /* Subtle contrast accenting on hover matching theme boundaries */
+    background: var(--color-portfolio-muted, rgba(156, 163, 175, 0.45));
+  }
+}
+
+/* Custom Multi-Column Masonry Alignment Structuring */
+.my-masonry-grid {
+  display: flex;
+  width: auto;
+  margin-left: -24px; /* Matches the gap-6 specification width offset */
+}
+
+.my-masonry-grid_column {
+  padding-left: 24px; /* Pushes child elements symmetrically apart */
+  background-clip: padding-box;
+}
+
+/* Force elements inside columns to maintain independent fluid vertical scaling */
+.my-masonry-grid_column > div {
+  margin-bottom: 24px;
+}
+
+@keyframes toastIn {
+  from {
+    transform: translateX(120%) scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes toastOut {
+  from {
+    transform: scale(1) translateY(0) rotate(0deg) skewX(0deg);
+    opacity: 1;
+  }
+  to {
+    /* Smooth gravity drop profile with a clean micro-rotation tilt */
+    transform: scale(0.88) translateY(46px) rotate(1.5deg) skewX(1deg);
+    opacity: 0;
+  }
+}
+
 /* ================= ⚡ TAILWIND V4 INLINE VARIABLE REGISTRATION ================= */
 @theme inline {
   --color-portfolio-bg: var(--bg);

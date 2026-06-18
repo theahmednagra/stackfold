@@ -13,10 +13,12 @@ export interface IInfo extends Document {
 
     endNote?: string;
 
-    themeId: string;
+    theme: string;
 
     projects: Types.ObjectId[];
     experiences: Types.ObjectId[];
+
+    isActive: boolean;
 }
 
 const InfoSchema = new Schema<IInfo>(
@@ -28,15 +30,6 @@ const InfoSchema = new Schema<IInfo>(
             unique: true,
             index: true,
         },
-
-        // username: {
-        //     type: String,
-        //     required: true,
-        //     unique: true,
-        //     lowercase: true,
-        //     trim: true,
-        //     index: true
-        // },
 
         fullname: { type: String, required: true },
         bio: { type: String, required: true },
@@ -54,9 +47,10 @@ const InfoSchema = new Schema<IInfo>(
 
         endNote: String,
 
-        themeId: {
+        theme: {
             type: String,
-            default: "default-theme",
+            enum: ["default-dark", "default-light"],
+            default: "default-dark",
         },
 
         projects: [
@@ -72,6 +66,11 @@ const InfoSchema = new Schema<IInfo>(
                 ref: "Experience",
             },
         ],
+
+        isActive: {
+            type: Boolean,
+            default: true,
+        }
     },
     {
         timestamps: true,
