@@ -23,7 +23,7 @@ export default function MobileMenuDrawer({
     >
       {/* Backdrop Tint */}
       <div 
-        className={`absolute inset-0 bg-[#030303]/40 backdrop-blur-xs transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-portfolio-bg/40 backdrop-blur-xs transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}
@@ -31,7 +31,7 @@ export default function MobileMenuDrawer({
 
       {/* Drawer Panel Sliding Content */}
       <div 
-        className={`relative w-72 h-full bg-[#030303] border-l border-portfolio-border/40 px-6 pt-32 flex flex-col gap-6 shadow-2xl transition-transform duration-300 ease-out transform ${
+        className={`relative w-72 h-full bg-portfolio-card border-l border-portfolio-border/40 px-6 pt-32 flex flex-col gap-6 shadow-2xl transition-transform duration-300 ease-out transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

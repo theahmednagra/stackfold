@@ -25,7 +25,7 @@ export default function SystemFooter({ socialLinks, endNote }: SystemFooterProps
     const validSocials = socialLinks ? socialLinks.filter(Boolean) : [];
 
     return (
-        <footer className="py-12 border-t border-portfolio-border/50 flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left w-full max-w-4xl mx-auto transition-colors duration-300">
+        <footer className="py-12 px-4 sm:px-6 md:px-0 border-t border-portfolio-border/50 flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left w-full max-w-4xl mx-auto transition-colors duration-300">
 
             {/* Left Hand: End Note Meta Content */}
             <div className="text-[13.5px] font-medium text-portfolio-muted tracking-normal max-w-sm sm:max-w-md leading-relaxed whitespace-pre-wrap order-1">

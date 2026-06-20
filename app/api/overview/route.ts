@@ -5,22 +5,18 @@ import { Visit } from "@/models/visit.model";
 import { verifySession } from "@/lib/authGuard";
 import { connectToDatabase } from "@/lib/db";
 
-
 export async function GET(req: NextRequest) {
     try {
-
         const session = await verifySession();
-
-        // 1. Establish database context connection
-        connectToDatabase();
-
-        // 2. Resolve target User Context safely
-        const currentUserId = session.userId;
-        if (!currentUserId) {
+        if (!session || !session.userId) {
             return NextResponse.json({ error: "Authentication required." }, { status: 401 });
         }
 
-        const targetUserId = new mongoose.Types.ObjectId(currentUserId);
+        // 1. Establish database context connection
+        await connectToDatabase();
+
+        // 2. Resolve target User Context safely
+        const targetUserId = new mongoose.Types.ObjectId(session.userId);
 
         // 3. Kick off execution of parallel metrics operations
         const [profilePipelineResult, trafficAggregates] = await Promise.all([
@@ -30,7 +26,7 @@ export async function GET(req: NextRequest) {
                 { $match: { userId: targetUserId } },
                 {
                     $lookup: {
-                        from: "projects", // MongoDB collection name (typically lowercase plurals)
+                        from: "projects", // MongoDB collection name
                         localField: "_id",
                         foreignField: "infoId",
                         as: "projectItems",
@@ -50,10 +46,10 @@ export async function GET(req: NextRequest) {
                         fullname: 1,
                         bio: 1,
                         theme: 1,
+                        isActive: 1, // ⚡ CRITICAL: Projected safely straight out of the Info collection
                         socialLinksCount: { $size: { $ifNull: ["$socialLinks", []] } },
                         totalProjects: { $size: "$projectItems" },
                         totalExperiences: { $size: "$experienceItems" },
-                        // Returns basic metadata array items for the preview summary section
                         recentProjects: {
                             $map: {
                                 input: { $slice: ["$projectItems", 3] }, // Limit to top 3
@@ -96,6 +92,7 @@ export async function GET(req: NextRequest) {
             fullname: "Anonymous Developer",
             bio: "Set up your public profile configuration.",
             theme: "default-dark",
+            isActive: false, // Default to hidden/uninitialized state safety
             socialLinksCount: 0,
             totalProjects: 0,
             totalExperiences: 0,
@@ -113,6 +110,7 @@ export async function GET(req: NextRequest) {
                 fullname: profileData.fullname,
                 bio: profileData.bio,
                 activeTheme: profileData.theme,
+                isActive: profileData.isActive, // ⚡ EXPORTED: Accessible for dashboard dynamic layout logic
             },
             counters: {
                 projects: profileData.totalProjects,

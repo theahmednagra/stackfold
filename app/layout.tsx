@@ -1,6 +1,18 @@
+import { Sen } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/global-theme-context";
 import { ToastProvider } from "@/context/toast-context";
+
+// 🎯 Re-export metadata and viewport directly so Next.js intercepts them safely
+export { metadata, viewport } from "./metadata";
+
+const senFont = Sen({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sen",
+  display: "swap",
+  preload: true,
+});
 
 export default function RootLayout({
   children,
@@ -8,13 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <head>
-        <title>Dynamic Portfolio Builder</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap" rel="stylesheet" />
-      </head>
-      <body className="min-h-full bg-portfolio-bg text-portfolio-text font-sans antialiased relative transition-colors duration-200">
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body
+        className={`${senFont.className} ${senFont.variable} min-h-full bg-portfolio-bg text-portfolio-text antialiased relative transition-colors duration-200`}
+      >
         <ThemeProvider>
           <ToastProvider>
             {children}

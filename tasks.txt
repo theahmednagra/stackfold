@@ -2,7 +2,15 @@ fix theme of side bar and navbar //
 fix layout of top buttons in mobile //
 core capabilites should appear smoothly //
 fix blur image component //
-make a loader for auth context
-make landing page
-finalize auth page
-use isActive and fix overview page accordingly
+make a loader for auth context //
+finalize auth page //
+make landing page //
+add dashboard image in landing page //
+use isActive and fix overview page accordingly //
+fix the techstack enter issue in mobile /
+fix the sidebar theme in portfolio //
+fix the footer padding also //
+
+
+later: use static font
+later: current removed scroll-smooth class from html, see if it works good without it

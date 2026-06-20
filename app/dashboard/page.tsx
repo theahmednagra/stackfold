@@ -14,6 +14,8 @@ import {
   FiTerminal,
   FiCheckCircle,
   FiBarChart2,
+  FiEyeOff,
+  FiLayout,
 } from "react-icons/fi";
 
 interface OverviewData {
@@ -22,6 +24,7 @@ interface OverviewData {
     fullname: string;
     bio: string;
     activeTheme: string;
+    isActive: boolean;
   };
   counters: {
     projects: number;
@@ -126,29 +129,49 @@ export default function OverviewDashboard() {
     <div className="w-full max-w-5xl mx-auto space-y-5 p-4 sm:p-6">
 
       {/* ── Identity banner ── */}
-      <div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
-        {/* Subtle top line accent */}
-        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/30 to-transparent" />
+<div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+  {/* Subtle top line accent */}
+  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/30 to-transparent" />
 
-        <div className="space-y-1 min-w-0">
-          <h1 className="text-2xl font-bold text-portfolio-text tracking-tight truncate">
-            {data.profile.fullname}
-          </h1>
-          <p className="text-[14px] text-portfolio-muted leading-relaxed max-w-xl">
-            {data.profile.bio}
-          </p>
-        </div>
+  <div className="space-y-1 min-w-0">
+    <h1 className="text-2xl font-bold text-portfolio-text tracking-tight truncate">
+      {data.profile.fullname}
+    </h1>
+    <p className="text-[14px] text-portfolio-muted leading-relaxed max-w-xl">
+      {data.profile.bio}
+    </p>
+  </div>
 
-        <div className="shrink-0 flex items-center gap-2 bg-portfolio-bg border border-portfolio-border/50 px-3 py-1.5 rounded-xl">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11.5px] font-mono text-portfolio-muted">
-            theme:{" "}
-            <span className="text-portfolio-text font-semibold">
-              {data.profile.activeTheme}
-            </span>
-          </span>
-        </div>
+  {/* 🎨 Balanced Visual Hierarchy Track */}
+  <div className="shrink-0 flex items-center gap-4">
+    
+    {/* Secondary Link: Clean Ghost Label (No competing fill) */}
+    <div className="flex items-center gap-1.5 border-r border-portfolio-border/60 pr-4 h-5">
+      <FiLayout size={13} className="text-portfolio-muted/70" />
+      <span className="text-[11.5px] font-mono text-portfolio-muted font-medium">
+        {data.profile.activeTheme}
+      </span>
+    </div>
+
+    {/* Primary Action: Clean Status Badge */}
+    {data.profile.isActive ? (
+      <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 px-2.5 py-1 rounded-md">
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+        </span>
+        Live
       </div>
+    ) : (
+      <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/5 border border-amber-500/20 px-2.5 py-1 rounded-md">
+        <FiEyeOff size={12} className="text-amber-500" />
+        Hidden
+      </div>
+    )}
+    
+  </div>
+</div>
+
 
       {/* ── Counter row ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -193,7 +216,7 @@ export default function OverviewDashboard() {
                   key={idx}
                   className="flex items-center justify-between gap-4 px-4 py-3 bg-portfolio-bg/50 border border-portfolio-border/40 rounded-xl hover:border-portfolio-border/70 transition-colors duration-150 group"
                 >
-                  <div className="min-w-0 space-y-1.5">
+                  <div className="min-w-0 space-y-2">
                     <p className="text-[13.5px] font-semibold text-portfolio-text truncate">
                       {project.title}
                     </p>

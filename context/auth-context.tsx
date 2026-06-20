@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import DashboardInitialSkeleton from "@/components/dashboard/initial-skeleton";
 
 // Define what our User object looks like
 interface User {
@@ -54,24 +55,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (isLoading) return;
 
-        // If user IS logged in, and tries to visit the auth page -> push them away to dashboard
         if (user && pathname.startsWith("/auth")) {
             router.replace("/dashboard");
         }
 
-        // If user is NOT logged in, and tries to visit a protected dashboard path -> push them to auth
         if (!user && pathname.startsWith("/dashboard")) {
             router.replace("/auth");
         }
     }, [user, isLoading, pathname, router]);
 
+    // Determine if we are currently in an active redirect phase to block flashing
+    const isRedirecting = !isLoading && (
+        (user && pathname.startsWith("/auth")) ||
+        (!user && pathname.startsWith("/dashboard")) ||
+        (user && pathname === "/")
+    );
+
     return (
         <AuthContext.Provider value={{ user, isLoading, refreshUser }}>
-            {/* Show a clean global loading screen while verifying the initial cookie state */}
-            {isLoading ? (
-                <div className="flex items-center justify-center min-h-screen bg-gray-50">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                </div>
+            {isLoading || isRedirecting ? (
+                <DashboardInitialSkeleton />
             ) : (
                 children
             )}

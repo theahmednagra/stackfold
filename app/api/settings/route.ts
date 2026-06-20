@@ -20,7 +20,7 @@ export async function GET() {
             return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
         }
 
-        // 2. Fetch the metadata from both models concurrently
+        // 2. Fetch metadata (isActive correctly loaded from the Info model)
         const [user, info] = await Promise.all([
             User.findById(session.userId).select("username email"),
             Info.findOne({ userId: session.userId }).select("theme isActive"),
@@ -35,7 +35,7 @@ export async function GET() {
             username: user.username,
             email: user.email,
             theme: info.theme,
-            isActive: info.isActive,
+            isActive: info.isActive, // ⚡ FIXED: Loaded directly from Info model
         });
     } catch (error) {
         return NextResponse.json({ error: "Failed to fetch settings" }, { status: 500 });
@@ -48,7 +48,6 @@ export async function GET() {
  * ==========================================
  */
 export async function PATCH(req: Request) {
-    // Start a Mongoose session to handle transactions (Ensures all updates succeed or all fail together)
     const dbSession = await mongoose.startSession();
     dbSession.startTransaction();
 
@@ -73,7 +72,6 @@ export async function PATCH(req: Request) {
         if (username !== undefined) {
             const trimmedUsername = username.trim();
 
-            // Enforce your exact model regex match rules
             const usernameRegex = /^[a-zA-Z0-9_]+$/;
             if (trimmedUsername.length < 3 || trimmedUsername.length > 20 || !usernameRegex.test(trimmedUsername)) {
                 await dbSession.abortTransaction();
@@ -81,7 +79,6 @@ export async function PATCH(req: Request) {
                 return NextResponse.json({ error: "Invalid username structure" }, { status: 400 });
             }
 
-            // Check for global structural duplicate conflicts
             const existingUser = await User.findOne({
                 username: trimmedUsername,
                 _id: { $ne: userObjectId }
@@ -93,7 +90,6 @@ export async function PATCH(req: Request) {
                 return NextResponse.json({ error: "Username is already occupied" }, { status: 409 });
             }
 
-            // Synchronize across BOTH collections safely inside the database transaction
             await User.findByIdAndUpdate(userObjectId, { username: trimmedUsername }).session(dbSession);
             await Info.findOneAndUpdate({ userId: userObjectId }, { username: trimmedUsername }).session(dbSession);
         }
@@ -113,7 +109,7 @@ export async function PATCH(req: Request) {
         }
 
         // ------------------------------------------
-        // ACTION 3: Handle Visibility Toggling (isActive)
+        // ACTION 3: Handle Visibility Toggling (isActive) - Reverted to Info Model
         // ------------------------------------------
         if (isActive !== undefined) {
             if (typeof isActive !== "boolean") {
@@ -122,17 +118,16 @@ export async function PATCH(req: Request) {
                 return NextResponse.json({ error: "Visibility status must be a boolean" }, { status: 400 });
             }
 
+            // ⚡ FIXED: Targets Info model instead of User to prevent cross-component visibility bugs
             await Info.findOneAndUpdate({ userId: userObjectId }, { isActive }).session(dbSession);
         }
 
-        // Commit all changes to the database cleanly
         await dbSession.commitTransaction();
         dbSession.endSession();
 
         return NextResponse.json({ success: true, message: "Settings updated flawlessly" });
 
     } catch (error) {
-        // If anything fails during the process, undo all alterations completely
         await dbSession.abortTransaction();
         dbSession.endSession();
         return NextResponse.json({ error: "Failed to modify settings payload" }, { status: 500 });

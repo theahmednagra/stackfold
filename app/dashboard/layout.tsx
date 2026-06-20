@@ -1,10 +1,8 @@
 "use client";
 
-import DashboardSidebar from "@/components/dashboard/dashboard-sidebar";
-import DashboardMobileHeader from "@/components/dashboard/mobile-header";
-import { ToastProvider } from "@/context/toast-context";
 import { AuthProvider } from "@/context/auth-context";
 import TopButtons from "@/components/dashboard/top-buttons";
+import Navigation from "@/components/dashboard/nav";
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -13,24 +11,26 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <AuthProvider>
-            <div className="min-h-screen bg-portfolio-bg text-portfolio-text antialiased selection:bg-portfolio-accent/20 selection:text-portfolio-accent flex w-full relative">
-                <ToastProvider>
+            <div className="min-h-screen w-full bg-portfolio-bg text-portfolio-text antialiased selection:bg-portfolio-accent/20 selection:text-portfolio-accent flex relative">
 
-                    {/* Structural Drawer Layout Columns */}
-                    <DashboardSidebar />
-                    <DashboardMobileHeader />
+                {/* Left Side Dynamic Navigation Bar */}
+                <Navigation />
 
-                    {/* Main Content Viewport Canvas Block */}
-                    <main className="flex-1 w-full md:pl-64 pt-14 md:pt-5 min-w-0 flex flex-col min-h-screen">
-                        <div className="w-full max-w-5xl mx-auto p-2 sm:p-4 lg:p-6 flex-1 flex flex-col">
-                            <TopButtons />
-                            <div className="flex-1 w-full animate-fadeIn">
-                                {children}
-                            </div>
+                {/* Core Administrative Workspace Frame */}
+                <main className="flex-1 w-full min-w-0 pt-14 md:pt-5 md:pl-64 flex flex-col min-h-screen">
+                    <div className="w-full max-w-5xl mx-auto px-4 py-4 sm:p-6 lg:p-8 flex-1 flex flex-col">
+
+                        {/* Context Global Control Strip */}
+                        <TopButtons />
+
+                        {/* Child Node Form / Metrics Views Render Injection Point */}
+                        <div className="flex-1 w-full animate-fadeIn [animation-duration:300ms]">
+                            {children}
                         </div>
-                    </main>
 
-                </ToastProvider>
+                    </div>
+                </main>
+
             </div>
         </AuthProvider>
     );

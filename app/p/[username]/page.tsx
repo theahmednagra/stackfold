@@ -35,11 +35,31 @@ export default async function PublicPortfolioPage({ params }: Props) {
   // Fire all database reads and the session check in parallel
   await connectToDatabase();
 
-  const [projects, experiences, session] = await Promise.all([
-    profile ? Project.find({ infoId: profile._id }).sort({ createdAt: -1 }).limit(3) : [],
-    profile ? Experience.find({ infoId: profile._id }).sort({ startDate: -1 }) : [],
-    verifySession().catch(() => null) // Catch error silently if visitor is logged out [Analytics]
+  const [rawProjects, rawExperiences, session] = await Promise.all([
+    profile ? Project.find({ infoId: profile._id }).sort({ createdAt: -1 }).limit(3).lean() : [],
+    profile ? Experience.find({ infoId: profile._id }).sort({ startDate: -1 }).lean() : [],
+    verifySession().catch(() => null) // Catch error silently if visitor is logged out
   ]);
+
+  // 🛠️ 1. Serialize Projects data to pass across Server/Client boundaries safely
+  const serializedProjects = rawProjects.map((project: any) => ({
+    ...project,
+    _id: project._id.toString(),
+    infoId: project.infoId.toString(),
+    createdAt: project.createdAt?.toISOString() || null,
+    updatedAt: project.updatedAt?.toISOString() || null,
+  }));
+
+  // 🛠️ 2. Serialize Experiences data to pass across Server/Client boundaries safely
+  const serializedExperiences = rawExperiences.map((exp: any) => ({
+    ...exp,
+    _id: exp._id.toString(),
+    infoId: exp.infoId.toString(),
+    startDate: exp.startDate instanceof Date ? exp.startDate.toISOString() : (exp.startDate || null),
+    endDate: exp.endDate instanceof Date ? exp.endDate.toISOString() : (exp.endDate || null),
+    createdAt: exp.createdAt?.toISOString() || null,
+    updatedAt: exp.updatedAt?.toISOString() || null,
+  }));
 
   // Check if the logged-in visitor is the portfolio owner [Analytics]
   const isOwner = session && session.userId === profile?.userId?.toString();
@@ -64,9 +84,11 @@ export default async function PublicPortfolioPage({ params }: Props) {
           socialLinks={profile?.socialLinks}
         />
 
-        <ExperienceTimeline experiences={experiences} />
+        {/* ⚡ FIXED: Passing pristine serialized plain data strings */}
+        <ExperienceTimeline experiences={serializedExperiences} />
 
-        <FeaturedProjects projects={projects} username={username} />
+        {/* ⚡ FIXED: Passing pristine serialized plain data strings */}
+        <FeaturedProjects projects={serializedProjects} username={username} />
 
         <ContactSection email={profile?.email || userAccount.email} />
 

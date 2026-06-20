@@ -2,8 +2,9 @@
 
 import ConfirmDialog from "@/components/dashboard/confirm-dialog";
 import { useToast } from "@/context/toast-context";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { FiUser, FiEye, FiEyeOff, FiMoon, FiSun, FiActivity, FiGlobe } from "react-icons/fi";
+import { FiUser, FiEyeOff, FiMoon, FiSun, FiActivity, FiGlobe, FiPlusCircle, FiArrowRight } from "react-icons/fi";
 
 interface SettingsState {
   username: string;
@@ -30,7 +31,8 @@ export default function SettingsPage() {
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => {
-        if (!data.error) {
+        // If data is fetched cleanly and doesn't contain errors or empty flags
+        if (data && !data.error && data.username) {
           setSettings(data);
           setUsernameInput(data.username);
         }
@@ -96,6 +98,7 @@ export default function SettingsPage() {
     triggerMutationRequest({ username: usernameInput.trim() });
   };
 
+  // 1. ASYNC RUNTIME SKELETON LOADER
   if (loading) {
     return (
       <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-6 animate-pulse pt-8">
@@ -110,12 +113,40 @@ export default function SettingsPage() {
     );
   }
 
-  if (!settings) return null;
+  // 2. EMPTY STATE LAYER (Profile does not exist yet)
+  if (!settings) {
+    return (
+      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 flex items-center justify-center min-h-[65vh] select-none">
+        <div className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-8 max-w-md w-full text-center space-y-6 shadow-xl animate-fadeIn relative overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/20 to-transparent" />
 
+          <div className="w-12 h-12 rounded-xl bg-portfolio-bg border border-portfolio-border/80 flex items-center justify-center text-portfolio-muted mx-auto shadow-inner">
+            <FiPlusCircle className="w-5 h-5 text-portfolio-accent" />
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-[16px] font-bold text-portfolio-text tracking-tight">Setup Your Profile First</h2>
+            <p className="text-[13px] text-portfolio-muted leading-relaxed">
+              Before adjusting system system parameters, routing handles, or themes, you need to create your core identity footprint data shell.
+            </p>
+          </div>
+
+          <Link
+            href="/dashboard/portfolio" 
+            className="h-10 w-full flex items-center justify-center gap-2 text-[12.5px] font-bold text-portfolio-bg bg-portfolio-text hover:bg-portfolio-text/90 rounded-xl transition-all shadow-md group cursor-pointer"
+          >
+            <span>Initialize Profile Layout</span>
+            <FiArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. SECURE CONFIGURATION WORKSPACE
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 p-4 sm:p-6 relative pb-20">
 
-      {/* Premium Reusable Intercept Confirmation Firewall Dialog */}
       <ConfirmDialog
         isOpen={pendingUpdate !== null}
         title={dialogConfig.title}
@@ -125,7 +156,6 @@ export default function SettingsPage() {
         onConfirm={handleConfirmedMutation}
       />
 
-      {/* Header Profile Title Panel Area */}
       <div className="border-b border-portfolio-border/60 pb-4">
         <h1 className="text-[20px] font-bold text-portfolio-text tracking-tight flex items-center gap-2.5">
           <FiActivity className="w-5 h-5 text-portfolio-accent" />
@@ -136,7 +166,7 @@ export default function SettingsPage() {
 
       <div className="space-y-5">
 
-        {/* 1. IDENTITY MANAGEMENT CONTROL BLOCK */}
+        {/* IDENTITY MANAGEMENT CONTROL BLOCK */}
         <section className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl overflow-hidden shadow-xl">
           <div className="p-5 sm:p-6 space-y-5">
             <div className="flex items-start sm:items-center gap-3 border-b border-portfolio-border/60 pb-4">
@@ -151,7 +181,6 @@ export default function SettingsPage() {
 
             <form onSubmit={handleUsernameSubmit} className="space-y-4">
               <div className="space-y-2">
-                {/* Dynamic Responsive Form Wrapper */}
                 <div className={`flex flex-col sm:flex-row rounded-xl overflow-hidden border transition-all bg-portfolio-bg shadow-inner focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-portfolio-card
                   ${usernameError
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-red-500/20'
@@ -216,7 +245,7 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* 2. THEME ENGINE SWITCH PANEL */}
+        {/* THEME ENGINE SWITCH PANEL */}
         <section className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-portfolio-bg border border-portfolio-border/80 flex items-center justify-center text-portfolio-muted shrink-0 shadow-inner">
@@ -250,7 +279,7 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* 3. SAFETY & PORTFOLIO PRIVACY SCOPE SLIDER */}
+        {/* SAFETY & PORTFOLIO PRIVACY SCOPE SLIDER */}
         <section className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-portfolio-bg border border-portfolio-border/80 flex items-center justify-center text-portfolio-muted shrink-0 shadow-inner">
@@ -262,7 +291,6 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Premium Sliding Toggle Component */}
           <button
             onClick={() => triggerMutationRequest({ isActive: !settings.isActive })}
             disabled={actionLoading}

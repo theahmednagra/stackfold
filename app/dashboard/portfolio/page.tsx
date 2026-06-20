@@ -106,6 +106,9 @@ export default function PortfolioDashboardPage() {
     );
   }
 
+  // ⚡ Check if the user has filled out their full profile name setup step
+  const hasFullnameConfigured = profileData && profileData.fullname;
+
   return (
     <div className="w-full max-w-5xl mx-auto space-y-12 p-4 sm:p-6">
 
@@ -130,19 +133,24 @@ export default function PortfolioDashboardPage() {
         onRefresh={fetchDashboardData}
       />
 
-      {/* 2. Core Projects Grid Layer */}
-      <ProjectSection
-        projects={projectsData}
-        onRefresh={fetchDashboardData}
-        onDelete={(id) => openDeleteModal(id, "project")}
-      />
+      {/* 🔮 Conditional Render Track System based on profile configuration */}
+      {hasFullnameConfigured && (
+        <>
+          {/* 2. Core Projects Grid Layer */}
+          <ProjectSection
+            projects={projectsData}
+            onRefresh={fetchDashboardData}
+            onDelete={(id) => openDeleteModal(id, "project")}
+          />
 
-      {/* 3. Core Experience Timeline Layer */}
-      <ExperienceSection
-        experiences={experienceData}
-        onRefresh={fetchDashboardData}
-        onDelete={(id) => openDeleteModal(id, "experience")}
-      />
+          {/* 3. Core Experience Timeline Layer */}
+          <ExperienceSection
+            experiences={experienceData}
+            onRefresh={fetchDashboardData}
+            onDelete={(id) => openDeleteModal(id, "experience")}
+          />
+        </>
+      )}
     </div>
   );
 }

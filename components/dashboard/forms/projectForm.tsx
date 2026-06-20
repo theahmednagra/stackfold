@@ -63,10 +63,28 @@ export default function ProjectForm({ initialData, onComplete }: ProjectFormProp
 
     const currentTechStack = watch("techStack") || [];
 
+    // ⚡ CATCH MOBILE VIRTUAL COMMAS
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        if (value.endsWith(",")) {
+            const cleanTag = value.slice(0, -1).trim();
+            if (cleanTag && !currentTechStack.includes(cleanTag)) {
+                setValue("techStack", [...currentTechStack, cleanTag], { shouldDirty: true });
+            }
+            setTagInput("");
+            return;
+        }
+
+        setTagInput(value);
+    };
+
+    // ⚡ ONLY CATCH DESKTOP HARDWARE ENTER KEYS
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" || e.key === ",") {
+        if (e.key === "Enter") {
             e.preventDefault();
-            const trimmed = tagInput.trim().replace(/,$/, "");
+
+            const trimmed = tagInput.trim();
             if (trimmed && !currentTechStack.includes(trimmed)) {
                 setValue("techStack", [...currentTechStack, trimmed], { shouldDirty: true });
                 setTagInput("");
@@ -390,8 +408,8 @@ export default function ProjectForm({ initialData, onComplete }: ProjectFormProp
                     ))}
                     <input
                         value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
+                        onChange={handleInputChange} // ⚡ Calls the mobile virtual keypad intercept function
+                        onKeyDown={handleKeyDown}    // ⚡ Cleared of comma logic to prevent process 229 bugs
                         placeholder={currentTechStack.length === 0 ? "Type tech and press Enter or Comma..." : ""}
                         className="flex-1 bg-transparent text-[14px] font-normal text-portfolio-text placeholder-portfolio-text/20 outline-none min-w-40"
                     />
