@@ -106,7 +106,7 @@ export default function AuthPage() {
 
   return (
     /* overflow-y-scroll forces a continuous vertical track layer to prevent page container layout-snapping */
-    <div className="w-full min-h-screen bg-portfolio-bg flex flex-col justify-center items-center p-4 overflow-y-scroll custom-scrollbar">
+    <div className="w-full bg-portfolio-bg flex flex-col justify-center items-center p-4 overflow-y-scroll custom-scrollbar">
       <div className="w-full max-w-md bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden transition-all duration-300 ease-in-out">
 
         {/* Decorative Top Accent Light Glow line */}
