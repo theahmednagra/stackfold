@@ -99,7 +99,7 @@ export default function PortfolioDashboardPage() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-5xl mx-auto space-y-10 p-4 sm:p-6 animate-pulse">
+      <div className="w-full max-w-5xl mx-auto space-y-10 py-4 sm:py-6 animate-pulse">
         <div className="w-full bg-portfolio-card/50 border border-portfolio-border/40 rounded-2xl p-5 sm:p-10 h-48" />
         <div className="w-full bg-portfolio-card/50 border border-portfolio-border/40 rounded-2xl p-5 sm:p-10 h-64" />
       </div>
@@ -110,7 +110,7 @@ export default function PortfolioDashboardPage() {
   const hasFullnameConfigured = profileData && profileData.fullname;
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-12 p-4 sm:p-6">
+    <div className="w-full max-w-5xl mx-auto space-y-12 py-4 sm:py-6">
 
       {/* 🛠️ GLOBAL INTERCEPT DELETION MODAL ENGINE */}
       <ConfirmDialog

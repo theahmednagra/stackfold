@@ -6,14 +6,25 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     const { username } = await params;
 
     // ⚡ CRITICAL: Use your production environment URL or fall back to localhost
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://stackfold.com";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://stackfold.vercel.app";
     const fallbackTitle = "Stackfold Portfolio";
     const fallbackDesc = "Build a portfolio that commands attention. The minimalist developer platform.";
+
+    // Global Favicon Overrides to force platform link overlays to use Stackfold branding
+    const globalIconsConfig = {
+        icon: [
+            { url: `${baseUrl}/favicon.ico`, sizes: "any" },
+            { url: `${baseUrl}/icon.png`, type: "image/png" }
+        ],
+        apple: `${baseUrl}/apple-touch-icon.png`, // Perfect for Apple shortcut support
+    };
+
 
     if (!username) {
         return {
             title: fallbackTitle,
             description: fallbackDesc,
+            icons: globalIconsConfig,
         };
     }
 
@@ -33,6 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         return {
             title,
             description,
+            icons: globalIconsConfig,
             openGraph: {
                 title,
                 description,
@@ -61,6 +73,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         return {
             title,
             description: "This portfolio space does not exist or has been set to private by the owner.",
+            icons: globalIconsConfig,
             openGraph: {
                 title,
                 type: "website",
@@ -92,6 +105,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     return {
         title: `${profile.fullname || "Developer"} - Portfolio`,
         description: profileDesc,
+        icons: globalIconsConfig, // Ensures Stackfold's brand always applies to live links
         openGraph: {
             title: profileTitle,
             description: profileDesc,
@@ -101,7 +115,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
             siteName: "Stackfold",
             images: [
                 {
-                    url: dynamicOgImageUrl, // Perfectly matches aspect ratio rules for WhatsApp/Instagram card previews
+                    url: dynamicOgImageUrl,
                     width: 1200,
                     height: 630,
                     alt: `${profileTitle} Portfolio Showcase Overview`,

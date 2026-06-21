@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://stackfold.com";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://stackfold.vercel.app";
 
 // ================= PRODUCTION SEO METADATA ARCHITECTURE =================
 export const metadata: Metadata = {
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dynamic Portfolio Builder | Stackfold",
     description: "Build a portfolio that commands attention. The minimalist developer showcase platform.",
-    url: baseUrl,
+    url: "/", // 💡 Cleans up to relative routing because metadataBase prefixes it
     siteName: "Stackfold",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/og-default.png", 
+        url: "/og-default.png", // 💡 metadataBase automatically resolves this to absolute
         width: 1200,
         height: 630,
         alt: "Stackfold Application Dashboard Overview Platform Canvas",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Dynamic Portfolio Builder | Stackfold",
     description: "The premier minimalist developer showcase platform.",
-    images: ["/og-default.png"],
+    images: ["/og-default.png"], // 💡 metadataBase resolves this automatically
   },
 
   icons: {
@@ -54,7 +54,9 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.png", type: "image/png", sizes: "32x32" },
     ],
-    apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 

@@ -55,6 +55,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (isLoading) return;
 
+        if (user && pathname === "/") {
+            router.replace("/dashboard");
+        }
+
         if (user && pathname.startsWith("/auth")) {
             router.replace("/dashboard");
         }
@@ -66,9 +70,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Determine if we are currently in an active redirect phase to block flashing
     const isRedirecting = !isLoading && (
+        (user && pathname === "/") ||
         (user && pathname.startsWith("/auth")) ||
-        (!user && pathname.startsWith("/dashboard")) ||
-        (user && pathname === "/")
+        (!user && pathname.startsWith("/dashboard"))
     );
 
     return (

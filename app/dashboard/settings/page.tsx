@@ -101,7 +101,7 @@ export default function SettingsPage() {
   // 1. ASYNC RUNTIME SKELETON LOADER
   if (loading) {
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-6 animate-pulse pt-8">
+      <div className="w-full max-w-5xl mx-auto py-4 sm:py-6 space-y-6 animate-pulse pt-8">
         <div className="space-y-2">
           <div className="h-7 w-32 bg-portfolio-card/50 rounded-lg" />
           <div className="h-4 w-64 bg-portfolio-card/50 rounded-lg" />
@@ -116,7 +116,7 @@ export default function SettingsPage() {
   // 2. EMPTY STATE LAYER (Profile does not exist yet)
   if (!settings) {
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 flex items-center justify-center min-h-[65vh] select-none">
+      <div className="w-full max-w-5xl mx-auto py-4 sm:py-6 flex items-center justify-center min-h-[65vh] select-none">
         <div className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-8 max-w-md w-full text-center space-y-6 shadow-xl animate-fadeIn relative overflow-hidden">
           <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/20 to-transparent" />
 
@@ -145,7 +145,7 @@ export default function SettingsPage() {
 
   // 3. SECURE CONFIGURATION WORKSPACE
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 p-4 sm:p-6 relative pb-20">
+    <div className="w-full max-w-5xl mx-auto space-y-6 py-4 sm:py-6 relative pb-20">
 
       <ConfirmDialog
         isOpen={pendingUpdate !== null}

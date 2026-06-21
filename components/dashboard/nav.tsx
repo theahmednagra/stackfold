@@ -49,8 +49,8 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
                         key={item.href}
                         href={item.href}
                         className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-bold tracking-tight transition-all duration-200 group border relative overflow-hidden ${isActive
-                                ? "bg-portfolio-card border-portfolio-border text-portfolio-accent"
-                                : "text-portfolio-muted/70 hover:text-portfolio-text hover:bg-portfolio-card/30 border-transparent"
+                            ? "bg-portfolio-card border-portfolio-border text-portfolio-accent"
+                            : "text-portfolio-muted/70 hover:text-portfolio-text hover:bg-portfolio-card/30 border-transparent"
                             }`}
                     >
                         {!isMobile && isActive && (
@@ -83,9 +83,12 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
         <>
             {/* 1. TOP MOBILE HEADER LAYER */}
             <header className="md:hidden w-full h-14 border-b border-portfolio-border/60 bg-portfolio-bg/80 backdrop-blur-md fixed top-0 left-0 right-0 z-40 px-4 flex items-center justify-between select-none">
-                <span className="font-black tracking-tight text-portfolio-text">
+                <Link
+                    href="/dashboard"
+                    className="font-black tracking-tight text-portfolio-text"
+                >
                     Stackfold
-                </span>
+                </Link>
                 {!isAuthPage && (
                     <button
                         onClick={() => setIsOpen(!isOpen)}
@@ -121,9 +124,12 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
                         <span className="text-[10px] font-mono tracking-[0.2em] text-portfolio-muted/40 block uppercase">
                             Control Center
                         </span>
-                        <span className="text-[18px] font-black tracking-tight text-portfolio-text block mt-1">
+                        <Link
+                            href="/dashboard"
+                            className="text-[18px] font-black tracking-tight text-portfolio-text block mt-1"
+                        >
                             Stackfold
-                        </span>
+                        </Link>
                     </div>
                     {!isAuthPage && <NavigationLinks />}
                 </div>

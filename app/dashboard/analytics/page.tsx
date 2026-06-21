@@ -66,44 +66,44 @@ export default function AnalyticsDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-  async function initializeAnalyticsTelemetry() {
-    try {
-      // ── Step 1: Lightweight Profile Onboarding Check ──
-      const profileRes = await fetch("/api/profile");
-      const profileData = await profileRes.json();
+  useEffect(() => {
+    async function initializeAnalyticsTelemetry() {
+      try {
+        // ── Step 1: Lightweight Profile Onboarding Check ──
+        const profileRes = await fetch("/api/profile");
+        const profileData = await profileRes.json();
 
-      // ⚡ FIX: Added optional chaining down into the nested '.profile' property object
-      if (!profileRes.ok || !profileData || profileData.error || !profileData.profile?.fullname) {
-        setHasProfile(false);
+        // ⚡ FIX: Added optional chaining down into the nested '.profile' property object
+        if (!profileRes.ok || !profileData || profileData.error || !profileData.profile?.fullname) {
+          setHasProfile(false);
+          setLoading(false);
+          return; // Short-circuit: prevent analytics collection database queries entirely
+        }
+
+        setHasProfile(true);
+
+        // ── Step 2: Fetch Analytics only if Profile Shell Exists ──
+        const analyticsRes = await fetch("/api/analytics/data");
+        if (!analyticsRes.ok) throw new Error("Could not sync traffic records.");
+
+        const analyticsData = await analyticsRes.json();
+        setAnalytics(analyticsData);
+      } catch (err: any) {
+        setError(err.message || "Failed to initialize telemetry vectors.");
+      } finally {
         setLoading(false);
-        return; // Short-circuit: prevent analytics collection database queries entirely
       }
-
-      setHasProfile(true);
-
-      // ── Step 2: Fetch Analytics only if Profile Shell Exists ──
-      const analyticsRes = await fetch("/api/analytics/data");
-      if (!analyticsRes.ok) throw new Error("Could not sync traffic records.");
-
-      const analyticsData = await analyticsRes.json();
-      setAnalytics(analyticsData);
-    } catch (err: any) {
-      setError(err.message || "Failed to initialize telemetry vectors.");
-    } finally {
-      setLoading(false);
     }
-  }
 
-  initializeAnalyticsTelemetry();
-}, []);
+    initializeAnalyticsTelemetry();
+  }, []);
 
 
 
   // 1. ASYNC DASHBOARD SKELETON LOADER
   if (loading) {
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-6 animate-pulse pt-8">
+      <div className="w-full max-w-5xl mx-auto py-4 sm:py-6 space-y-6 animate-pulse pt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="h-24 bg-portfolio-card/50 border border-portfolio-border/40 rounded-2xl" />
@@ -118,14 +118,14 @@ export default function AnalyticsDashboard() {
   // 2. SHORT-CIRCUIT INTERCEPT LAYER (Profile not initialized yet)
   if (hasProfile === false) {
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 flex items-center justify-center min-h-[65vh] select-none">
+      <div className="w-full max-w-5xl mx-auto py-4 sm:py-6 flex items-center justify-center min-h-[65vh] select-none">
         <div className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-8 max-w-md w-full text-center space-y-6 shadow-xl animate-fadeIn relative overflow-hidden">
           <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/20 to-transparent" />
-          
+
           <div className="w-12 h-12 rounded-xl bg-portfolio-bg border border-portfolio-border/80 flex items-center justify-center text-portfolio-muted mx-auto shadow-inner">
             <FiPlusCircle className="w-5 h-5 text-portfolio-accent" />
           </div>
-          
+
           <div className="space-y-2">
             <h2 className="text-[16px] font-bold text-portfolio-text tracking-tight">Analytics Offline</h2>
             <p className="text-[13px] text-portfolio-muted leading-relaxed">
@@ -169,7 +169,7 @@ export default function AnalyticsDashboard() {
   const maxCountryCount = Math.max(...analytics.topCountries.map(c => c.count), 1);
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 p-4 sm:p-6 relative">
+    <div className="w-full max-w-5xl mx-auto space-y-6 py-4 sm:py-6 relative">
 
       {/* Upper Dashboard Sub-Header Context Block */}
       <div className="border-b border-portfolio-border/60 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -246,7 +246,7 @@ export default function AnalyticsDashboard() {
       </div>
 
       {/* Primary Chart Presentation Block */}
-      <div className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-6">
+      <div className="bg-portfolio-card border border-portfolio-border/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-6 outline-none">
         <div>
           <h3 className="text-[16px] font-bold text-portfolio-text tracking-tight flex items-center gap-2">
             <FiEye className="w-4 h-4 text-portfolio-accent" />
@@ -255,7 +255,8 @@ export default function AnalyticsDashboard() {
           <p className="text-[13px] text-portfolio-muted">Chronological analysis of incoming public portfolio visits</p>
         </div>
 
-        <div className="w-full h-76 text-xs font-mono">
+        {/* Removed default tap highlight/outline bugs on mobile inside the container */}
+        <div className="w-full h-76 text-xs font-mono outline-none select-none **:outline-none">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 10, right: 5, left: -25, bottom: 0 }}>
               <defs>
@@ -264,11 +265,43 @@ export default function AnalyticsDashboard() {
                   <stop offset="95%" stopColor="var(--color-portfolio-accent, #3b82f6)" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="rgba(255,255,255,0.03)" vertical={false} strokeDasharray="3 3" />
-              <XAxis dataKey="date" stroke="rgba(255,255,255,0.25)" fontSize={10} tickLine={false} axisLine={false} dy={12} />
-              <YAxis stroke="rgba(255,255,255,0.25)" fontSize={10} tickLine={false} axisLine={false} allowDecimals={false} />
-              <Tooltip content={<CustomChartTooltip />} cursor={{ stroke: "rgba(255,255,255,0.08)", strokeWidth: 1 }} />
-              <Area type="monotone" dataKey="views" stroke="var(--color-portfolio-accent, #3b82f6)" strokeWidth={2.5} fillOpacity={1} fill="url(#glowColor)" />
+
+              {/* Fixed: Uses your portfolio layout border token to automatically look correct in dark & light modes */}
+              <CartesianGrid stroke="var(--portfolio-border, rgba(128,128,128,0.1))" opacity={0.3} vertical={false} strokeDasharray="3 3" />
+
+              {/* Fixed: Uses your portfolio muted text token instead of hardcoded semi-transparent white */}
+              <XAxis
+                dataKey="date"
+                stroke="var(--portfolio-muted, #888888)"
+                opacity={0.7}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                dy={12}
+              />
+              <YAxis
+                stroke="var(--portfolio-muted, #888888)"
+                opacity={0.7}
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                allowDecimals={false}
+              />
+
+              {/* Fixed: Adaptive vertical cursor bar colors */}
+              <Tooltip
+                content={<CustomChartTooltip />}
+                cursor={{ stroke: "var(--portfolio-border, rgba(128,128,128,0.2))", strokeWidth: 1 }}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="views"
+                stroke="var(--color-portfolio-accent, #3b82f6)"
+                strokeWidth={2.5}
+                fillOpacity={1}
+                fill="url(#glowColor)"
+              />
             </AreaChart>
           </ResponsiveContainer>
         </div>

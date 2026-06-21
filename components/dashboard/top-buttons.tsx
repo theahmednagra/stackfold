@@ -26,8 +26,9 @@ const TopButtons = () => {
     };
 
     return (
-        <div className="w-full flex justify-end px-4 sm:px-0 mb-4 select-none">
-            <div className="flex items-center gap-2 bg-portfolio-card/30 p-1 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
+        // REMOVED px-4 sm:px-0 to fix alignment shifts
+        <div className="w-full flex justify-end mb-5 select-none">
+            <div className="flex items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
 
                 {/* Copy Link Control */}
                 <Tooltip content={copied ? "Link Copied!" : "Copy Live Portfolio URL"}>

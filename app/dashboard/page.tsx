@@ -1,5 +1,6 @@
 "use client";
 
+import TopButtons from "@/components/dashboard/top-buttons";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
@@ -86,7 +87,15 @@ export default function OverviewDashboard() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-5 animate-pulse">
+      <div className="w-full max-w-5xl mx-auto space-y-5 animate-pulse">
+        <div className="w-full flex justify-end mb-5 select-none animate-pulse">
+          <div className="flex items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
+            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+            <div className="w-px h-4 bg-portfolio-border/60 mx-0.5" />
+            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+          </div>
+        </div>
         <div className="h-22 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
@@ -126,51 +135,53 @@ export default function OverviewDashboard() {
   );
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-5 p-4 sm:p-6">
+    <div className="w-full max-w-5xl mx-auto space-y-5">
+
+      <TopButtons />
 
       {/* ── Identity banner ── */}
-<div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
-  {/* Subtle top line accent */}
-  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/30 to-transparent" />
+      <div className="bg-portfolio-card border border-portfolio-border/70 rounded-2xl px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+        {/* Subtle top line accent */}
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-portfolio-accent/30 to-transparent" />
 
-  <div className="space-y-1 min-w-0">
-    <h1 className="text-2xl font-bold text-portfolio-text tracking-tight truncate">
-      {data.profile.fullname}
-    </h1>
-    <p className="text-[14px] text-portfolio-muted leading-relaxed max-w-xl">
-      {data.profile.bio}
-    </p>
-  </div>
+        <div className="space-y-1 min-w-0">
+          <h1 className="text-2xl font-bold text-portfolio-text tracking-tight truncate">
+            {data.profile.fullname}
+          </h1>
+          <p className="text-[14px] text-portfolio-muted leading-relaxed max-w-xl">
+            {data.profile.bio}
+          </p>
+        </div>
 
-  {/* 🎨 Balanced Visual Hierarchy Track */}
-  <div className="shrink-0 flex items-center gap-4">
-    
-    {/* Secondary Link: Clean Ghost Label (No competing fill) */}
-    <div className="flex items-center gap-1.5 border-r border-portfolio-border/60 pr-4 h-5">
-      <FiLayout size={13} className="text-portfolio-muted/70" />
-      <span className="text-[11.5px] font-mono text-portfolio-muted font-medium">
-        {data.profile.activeTheme}
-      </span>
-    </div>
+        {/* 🎨 Balanced Visual Hierarchy Track */}
+        <div className="shrink-0 flex items-center gap-4">
 
-    {/* Primary Action: Clean Status Badge */}
-    {data.profile.isActive ? (
-      <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 px-2.5 py-1 rounded-md">
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-        </span>
-        Live
+          {/* Secondary Link: Clean Ghost Label (No competing fill) */}
+          <div className="flex items-center gap-1.5 border-r border-portfolio-border/60 pr-4 h-5">
+            <FiLayout size={13} className="text-portfolio-muted/70" />
+            <span className="text-[11.5px] font-mono text-portfolio-muted font-medium">
+              {data.profile.activeTheme}
+            </span>
+          </div>
+
+          {/* Primary Action: Clean Status Badge */}
+          {data.profile.isActive ? (
+            <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 px-2.5 py-1 rounded-md">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+              </span>
+              Live
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/5 border border-amber-500/20 px-2.5 py-1 rounded-md">
+              <FiEyeOff size={12} className="text-amber-500" />
+              Hidden
+            </div>
+          )}
+
+        </div>
       </div>
-    ) : (
-      <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/5 border border-amber-500/20 px-2.5 py-1 rounded-md">
-        <FiEyeOff size={12} className="text-amber-500" />
-        Hidden
-      </div>
-    )}
-    
-  </div>
-</div>
 
 
       {/* ── Counter row ── */}

@@ -27,15 +27,30 @@ export default function SystemFooter({ socialLinks, endNote }: SystemFooterProps
     return (
         <footer className="py-12 px-4 sm:px-6 md:px-0 border-t border-portfolio-border/50 flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left w-full max-w-4xl mx-auto transition-colors duration-300">
 
-            {/* Left Hand: End Note Meta Content */}
-            <div className="text-[13.5px] font-medium text-portfolio-muted tracking-normal max-w-sm sm:max-w-md leading-relaxed whitespace-pre-wrap order-1">
-                {endNote ? (
-                    endNote
-                ) : (
-                    <span className="select-none font-normal">
-                        Made with <span className="text-portfolio-accent/80 text-[9px] inline-block animate-pulse mx-0.5">✦</span> by Developer
+            {/* Left Hand: End Note Meta Content + Seamless Premium Branding */}
+            <div className="flex flex-col gap-1.5 order-1 items-center sm:items-start">
+                <div className="text-[13.5px] font-medium text-portfolio-muted tracking-normal max-w-sm sm:max-w-md leading-relaxed whitespace-pre-wrap">
+                    {endNote ? (
+                        endNote
+                    ) : (
+                        <span className="select-none font-normal">
+                            Made with <span className="text-portfolio-accent/80 text-[9px] inline-block animate-pulse mx-0.5">✦</span> by Developer
+                        </span>
+                    )}
+                </div>
+
+                {/* Elegant Micro-Branding Signature */}
+                <a
+                    href="https://stackfold.vercel.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-medium text-portfolio-muted/40 hover:text-portfolio-accent/80 transition-colors tracking-tight flex items-center gap-1 select-none group"
+                >
+                    <span>Powered by</span>
+                    <span className="font-semibold text-portfolio-muted/60 group-hover:text-portfolio-text transition-colors">
+                        Stackfold
                     </span>
-                )}
+                </a>
             </div>
 
             {/* Right Hand: Structured Micro Action Layout Links */}
