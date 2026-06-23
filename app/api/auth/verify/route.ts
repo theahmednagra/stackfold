@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
         const sessionPayload = {
             userId: user._id.toString(),
             username: user.username,
+            email: user.email,
         };
 
         const token = jwt.sign(sessionPayload, secretKey, { expiresIn: "7d" });

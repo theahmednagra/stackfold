@@ -9,12 +9,12 @@ import {
   FiGlobe,
   FiCalendar,
   FiAlertCircle,
-  FiActivity,
   FiMapPin,
   FiLoader,
   FiPlusCircle,
   FiArrowRight
 } from "react-icons/fi";
+import { GoGraph } from "react-icons/go";
 
 interface DbDataPoint { _id: string; views: number; }
 interface CountryData { _id: string; count: number; }
@@ -172,10 +172,10 @@ export default function AnalyticsDashboard() {
     <div className="w-full max-w-5xl mx-auto space-y-6 py-4 sm:py-6 relative">
 
       {/* Upper Dashboard Sub-Header Context Block */}
-      <div className="border-b border-portfolio-border/60 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="border-b border-portfolio-border/60 pb-4 flex justify-between items-center flex-wrap gap-4">
         <div>
           <h2 className="text-[20px] font-bold text-portfolio-text tracking-tight flex items-center gap-2.5">
-            <FiActivity className="w-5 h-5 text-portfolio-accent" />
+            <GoGraph className="w-5 h-5 text-portfolio-accent" />
             <span>Audience Insights</span>
           </h2>
         </div>

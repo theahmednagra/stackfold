@@ -39,7 +39,7 @@ export default function LazyImage({ src, alt, className = "", ...props }: LazyIm
         <img
           src={src}
           alt={alt}
-          className={`transition-opacity duration-500 ease-out will-change-[opacity] ${className} ${isLoaded ? "opacity-100" : "opacity-0"
+          className={`transition-opacity duration-200 ease-out will-change-[opacity] ${className} ${isLoaded ? "opacity-100" : "opacity-0"
             }`}
           {...props}
         />

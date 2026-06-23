@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { Visit } from "@/models/visit.model";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 
 export async function GET(req: Request) {
     try {

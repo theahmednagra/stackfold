@@ -16,7 +16,7 @@ import SystemFooter from "@/components/portfolio/system-footer";
 
 // For Analytics
 import AnalyticsTracker from "@/components/portfolio/analytics-tracker";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 
 interface Props {
   params: Promise<{ username: string }>;

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { Info } from "@/models/info.model";
 import { Visit } from "@/models/visit.model";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 import { connectToDatabase } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
                             $map: {
                                 input: { $slice: ["$projectItems", 3] }, // Limit to top 3
                                 as: "p",
-                                in: { title: "$$p.title", techStack: "$$p.techStack", slug: "$$p.slug" }
+                                in: { title: "$$p.title", techStack: "$$p.techStack", slug: "$$p.slug", projectUrl: "$$p.projectUrl" }
                             }
                         }
                     },
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
                         topGeographies: [
                             { $group: { _id: "$country", count: { $sum: 1 } } },
                             { $sort: { count: -1 } },
-                            { $limit: 3 }
+                            { $limit: 2 }
                         ]
                     },
                 },

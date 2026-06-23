@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
 import { Info } from "@/models/info.model";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 
 /**
  * ==========================================

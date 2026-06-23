@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 interface DecodedSession {
     userId: string;
     username: string;
+    email: string;
 }
 
 /**

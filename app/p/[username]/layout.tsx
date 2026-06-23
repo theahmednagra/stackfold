@@ -9,6 +9,7 @@ import { CommandProvider } from "@/context/command-context";
 import CommandMenu from "@/components/portfolio/command-menu";
 import FloatingShortcut from "@/components/portfolio/floating-shortcut";
 import AmbientGlow from "@/components/portfolio/ambient-glow";
+import { ToastProvider } from "@/context/toast-context";
 
 // Re-export generateMetadata directly from this layout portal so Next.js hooks it safely
 export { generateMetadata } from "./metadata";
@@ -102,12 +103,14 @@ export default async function PortfolioLayout({ children, params }: LayoutProps)
     <div data-theme={profile.theme || "default-dark"}>
       <ProgressProvider>
         <CommandProvider>
-          <div className="relative min-h-screen bg-portfolio-bg text-portfolio-text antialiased font-sans transition-colors duration-300 flex flex-col items-center w-full">
-            <CommandMenu username={username} projects={optimizedProjects} socials={profile.socialLinks} />
-            <AmbientGlow />
-            <div className="w-full relative z-10 flex flex-col items-center">{children}</div>
-            <FloatingShortcut />
-          </div>
+          <ToastProvider>
+            <div className="relative min-h-screen bg-portfolio-bg text-portfolio-text antialiased font-sans transition-colors duration-300 flex flex-col items-center w-full">
+              <CommandMenu username={username} projects={optimizedProjects} socials={profile.socialLinks} />
+              <AmbientGlow />
+              <div className="w-full relative z-10 flex flex-col items-center">{children}</div>
+              <FloatingShortcut />
+            </div>
+          </ToastProvider>
         </CommandProvider>
       </ProgressProvider>
     </div>

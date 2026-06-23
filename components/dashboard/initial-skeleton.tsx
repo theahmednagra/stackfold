@@ -46,40 +46,31 @@ export default function DashboardInitialSkeleton() {
             </aside>
 
             {/* 3. MAIN CONTENT LAYER VIEWPORT */}
-            {/* Fixed: Synced padding with active DashboardLayout structure */}
-            <main className="flex-1 w-full md:pl-64 pt-14 md:pt-0 min-w-0 flex flex-col min-h-screen">
+            <main className="flex-1 w-full min-w-0 pt-14 md:pt-0 md:pl-64 flex flex-col min-h-screen">
                 <div className="w-full max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-1 flex flex-col">
-
-                    {/* ── Top Utility Action Buttons Skeleton Row ── */}
-                    {/* Fixed: Matched spacing variables, heights, paddings, and margin-bottoms */}
-                    <div className="w-full flex justify-end mb-5 select-none animate-pulse">
-                        <div className="flex items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
-                            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
-                            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
-                            <div className="w-px h-4 bg-portfolio-border/60 mx-0.5" />
-                            <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+                    <div className="w-full max-w-5xl mx-auto space-y-5 py-4 sm:py-6 animate-pulse">
+                        <div className="w-full flex justify-end mb-5 select-none animate-pulse">
+                            <div className="flex items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
+                                <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+                                <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+                                <div className="w-px h-4 bg-portfolio-border/60 mx-0.5" />
+                                <div className="w-8.5 h-8.5 rounded-lg bg-portfolio-card border border-portfolio-border/40" />
+                            </div>
                         </div>
-                    </div>
-
-                    {/* ── Core Inner Component Viewport Placeholder ── */}
-                    <div className="w-full space-y-5 flex-1 animate-pulse">
-                        {/* Identity Banner Frame Block */}
-                        <div className="w-full h-22 bg-portfolio-card/60 border border-portfolio-border/70 rounded-2xl" />
-
-                        {/* Counters Row Blocks */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        <div className="h-22 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             {[1, 2, 3].map((i) => (
-                                <div key={i} className="h-22 bg-portfolio-card/50 border border-portfolio-border/70 rounded-2xl" />
+                                <div
+                                    key={i}
+                                    className="h-22 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl"
+                                />
                             ))}
                         </div>
-
-                        {/* Layout Split Panels Blocks */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div className="md:col-span-2 h-72 bg-portfolio-card/40 border border-portfolio-border/70 rounded-2xl" />
-                            <div className="h-72 bg-portfolio-card/40 border border-portfolio-border/70 rounded-2xl" />
+                            <div className="md:col-span-2 h-72 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
+                            <div className="h-72 bg-portfolio-card/50 border border-portfolio-border/30 rounded-2xl" />
                         </div>
                     </div>
-
                 </div>
             </main>
         </div>

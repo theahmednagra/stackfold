@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FiGrid, FiUser, FiBarChart2, FiSettings } from "react-icons/fi";
+import { LuSparkle } from "react-icons/lu";
 import { useAuth } from "@/context/auth-context";
 import LogoutButton from "./logout-button";
 import Link from "next/link";
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
     { label: "Portfolio", href: "/dashboard/portfolio", icon: FiUser },
     { label: "Analytics", href: "/dashboard/analytics", icon: FiBarChart2 },
     { label: "Settings", href: "/dashboard/settings", icon: FiSettings },
+    { label: "Copilot", href: "/dashboard/copilot", icon: LuSparkle },
 ];
 
 interface NavigationProps {
@@ -20,6 +22,7 @@ interface NavigationProps {
 
 export default function Navigation({ isAuthPage = false }: NavigationProps) {
     const { user } = useAuth();
+    const router = useRouter();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -35,6 +38,11 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
         }
         return () => { document.body.style.overflow = ""; };
     }, [isOpen, isAuthPage]);
+
+    function handleDashboardRedirect() {
+        if (!user) return;
+        router.push("/dashboard");
+    }
 
     // Safety fallback: if it's a real dashboard environment and user state isn't active yet
     if (!user && !isAuthPage) return null;
@@ -83,12 +91,12 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
         <>
             {/* 1. TOP MOBILE HEADER LAYER */}
             <header className="md:hidden w-full h-14 border-b border-portfolio-border/60 bg-portfolio-bg/80 backdrop-blur-md fixed top-0 left-0 right-0 z-40 px-4 flex items-center justify-between select-none">
-                <Link
-                    href="/dashboard"
+                <span
+                    onClick={handleDashboardRedirect}
                     className="font-black tracking-tight text-portfolio-text"
                 >
                     Stackfold
-                </Link>
+                </span>
                 {!isAuthPage && (
                     <button
                         onClick={() => setIsOpen(!isOpen)}
@@ -124,12 +132,12 @@ export default function Navigation({ isAuthPage = false }: NavigationProps) {
                         <span className="text-[10px] font-mono tracking-[0.2em] text-portfolio-muted/40 block uppercase">
                             Control Center
                         </span>
-                        <Link
-                            href="/dashboard"
+                        <span
+                            onClick={handleDashboardRedirect}
                             className="text-[18px] font-black tracking-tight text-portfolio-text block mt-1"
                         >
                             Stackfold
-                        </Link>
+                        </span>
                     </div>
                     {!isAuthPage && <NavigationLinks />}
                 </div>

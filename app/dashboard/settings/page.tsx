@@ -4,7 +4,8 @@ import ConfirmDialog from "@/components/dashboard/confirm-dialog";
 import { useToast } from "@/context/toast-context";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { FiUser, FiEyeOff, FiMoon, FiSun, FiActivity, FiGlobe, FiPlusCircle, FiArrowRight } from "react-icons/fi";
+import { FiUser, FiEyeOff, FiMoon, FiSun, FiActivity, FiGlobe, FiPlusCircle, FiArrowRight, FiAlertCircle } from "react-icons/fi";
+import { HiOutlineCpuChip } from "react-icons/hi2";
 
 interface SettingsState {
   username: string;
@@ -20,6 +21,7 @@ export default function SettingsPage() {
 
   const [settings, setSettings] = useState<SettingsState | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>("");
   const [usernameInput, setUsernameInput] = useState("");
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
@@ -29,17 +31,27 @@ export default function SettingsPage() {
 
   useEffect(() => {
     fetch("/api/settings")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        // If data is fetched cleanly and doesn't contain errors or empty flags
+        // Check for valid data
         if (data && !data.error && data.username) {
           setSettings(data);
           setUsernameInput(data.username);
         }
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        setError(err.message || "Something went wrong");
+      })
+      .finally(() => {
+        setLoading(false); // Guarantees the spinner stops no matter what
+      });
   }, []);
+
 
   const triggerMutationRequest = (fields: Partial<SettingsState>) => {
     setPendingUpdate(fields);
@@ -132,7 +144,7 @@ export default function SettingsPage() {
           </div>
 
           <Link
-            href="/dashboard/portfolio" 
+            href="/dashboard/portfolio"
             className="h-10 w-full flex items-center justify-center gap-2 text-[12.5px] font-bold text-portfolio-bg bg-portfolio-text hover:bg-portfolio-text/90 rounded-xl transition-all shadow-md group cursor-pointer"
           >
             <span>Initialize Profile Layout</span>
@@ -143,7 +155,22 @@ export default function SettingsPage() {
     );
   }
 
-  // 3. SECURE CONFIGURATION WORKSPACE
+  // 3. TELEMETRY RECORD SYNC FAULT state
+  if (error || !settings) {
+    return (
+      <div className="w-full max-w-5xl mx-auto p-6 text-center py-20">
+        <div className="w-12 h-12 rounded-xl bg-red-950/20 border border-red-900/40 flex items-center justify-center mx-auto text-red-400 mb-4">
+          <FiAlertCircle className="w-5 h-5" />
+        </div>
+        <h3 className="text-[16px] font-bold text-portfolio-text">Failed to load</h3>
+        <p className="text-[13px] text-portfolio-muted mt-1 max-w-sm mx-auto">
+          {error || "Failed to load active system configurations safely."}
+        </p>
+      </div>
+    );
+  }
+
+  // 4. SECURE CONFIGURATION WORKSPACE
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 py-4 sm:py-6 relative pb-20">
 
@@ -158,7 +185,7 @@ export default function SettingsPage() {
 
       <div className="border-b border-portfolio-border/60 pb-4">
         <h1 className="text-[20px] font-bold text-portfolio-text tracking-tight flex items-center gap-2.5">
-          <FiActivity className="w-5 h-5 text-portfolio-accent" />
+          <HiOutlineCpuChip className="w-5 h-5 text-portfolio-accent" />
           <span>System Configurations</span>
         </h1>
         <p className="text-[13px] text-portfolio-muted mt-0.5">Manage your public account profile routing vectors and identity attributes.</p>
@@ -307,7 +334,6 @@ export default function SettingsPage() {
             />
           </button>
         </section>
-
       </div>
     </div>
   );

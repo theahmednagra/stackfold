@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 import { Info } from "@/models/info.model";
 import { profileFormSchema } from "@/schemas/profileSchema";
 

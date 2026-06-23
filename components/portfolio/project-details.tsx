@@ -1,82 +1,90 @@
+import React from "react";
+
 interface ProjectDetailsProps {
   description: string;
   features?: string[];
   techStack?: string[];
 }
 
-export default function ProjectDetails({ description, features = [], techStack = [] }: ProjectDetailsProps) {
+export default function ProjectDetails({ 
+  description, 
+  features = [], 
+  techStack = [] 
+}: ProjectDetailsProps) {
   return (
-    <div className="w-full space-y-10 pt-2 text-left animate-fade-in">
-
-      {/* 📝 SECTION 1: Case Overview Copy */}
-      <div className="space-y-4 w-full">
-        <h4 className="text-[12px] sm:text-[13px] font-bold tracking-widest text-portfolio-accent uppercase font-mono select-none">
-          // Overview
-        </h4>
-        <p className="text-[15.5px] sm:text-[17px] text-portfolio-muted leading-relaxed font-normal tracking-normal whitespace-pre-wrap w-full">
+    <article className="w-full space-y-10 md:space-y-8 text-left animate-fade-in antialiased selection:bg-portfolio-accent/20">
+      
+      {/* SECTION 1: Case Overview Copy */}
+      <section className="prose prose-portfolio max-w-none">
+        <p className="text-[16px] leading-relaxed font-normal tracking-wide text-portfolio-muted whitespace-pre-wrap">
           {description}
         </p>
-      </div>
+      </section>
 
-      {/* 🛠️ SECTION 2: Integrated Technical Stack Row (Visual Separator Matrix) */}
+      {/* SECTION 2: Technical Stack Row */}
       {techStack.length > 0 && (
-        <div className="w-full py-5 border-y border-portfolio-border/40 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
-          <span className="text-[11.5px] sm:text-[12px] font-mono font-bold tracking-wider text-portfolio-text uppercase shrink-0 select-none">
-            Engineered With:
-          </span>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+        <section 
+          className="w-full py-6 border-y border-portfolio-border/30 flex flex-col md:flex-row md:items-center gap-4"
+          aria-label="Technology Stack"
+        >
+          <h3 className="text-[11px] font-mono font-bold tracking-widest text-portfolio-text/60 uppercase shrink-0 select-none">
+            Engineered With
+          </h3>
+          <div className="flex flex-wrap gap-2">
             {techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-2.5 py-1 rounded-lg text-[12.5px] sm:text-[13px] font-mono bg-portfolio-card border border-portfolio-border text-portfolio-text/90 font-medium shadow-2xs whitespace-nowrap"
+                className="px-3 py-1 rounded-md text-[12px] font-mono bg-portfolio-card/50 border border-portfolio-border/60 text-portfolio-text/90 font-medium tracking-tight shadow-xs hover:border-portfolio-accent/40 transition-colors duration-200"
               >
                 {tech}
               </span>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* 📋 SECTION 3: Highlights & Innovations Grid */}
+      {/* SECTION 3: Highlights & Innovations */}
       {features.length > 0 && (
-        <div className="space-y-6 w-full">
-          <h4 className="text-[12px] sm:text-[13px] font-bold tracking-widest text-portfolio-accent uppercase font-mono select-none">
-            // Core Highlights & Innovations
-          </h4>
-          <div className="grid grid-cols-1 gap-4 w-full">
+        <section className="space-y-6 w-full" aria-label="Project Highlights">
+          <h3 className="text-[11px] font-mono font-bold tracking-widest text-portfolio-accent uppercase select-none">
+            Core Highlights & Innovations
+          </h3>
+          <ul className="grid gap-4 w-full list-none m-0 p-0">
             {features.map((feat, index) => {
-              // Strictly isolate only the first colon to protect descriptions containing URLs or inline times
               const match = feat.match(/^([^:]+):(.*)$/);
               const titlePart = match ? match[1].trim() : null;
               const bodyPart = match ? match[2] : feat;
 
               return (
-                <div
+                <li
                   key={index}
-                  className="w-full p-4 sm:p-5 rounded-xl border border-portfolio-border bg-portfolio-card/20 flex items-start gap-3.5 text-[14.5px] sm:text-[15.5px] text-portfolio-muted leading-relaxed transition-colors duration-200 hover:bg-portfolio-card/40"
+                  className="group w-full flex items-start gap-3 text-[15px] text-portfolio-muted leading-relaxed"
                 >
-                  <span className="text-portfolio-accent font-mono select-none pt-0.5 text-[13px] sm:text-[14px] shrink-0">
+                  <span 
+                    className="text-portfolio-accent/60 font-mono select-none pt-1.25 text-[10px] shrink-0 group-hover:text-portfolio-accent transition-colors duration-200" 
+                    aria-hidden="true"
+                  >
                     ✦
                   </span>
-                  <p className="w-full wrap-break-word whitespace-normal">
+                  <div className="w-full wrap-break-word">
                     {titlePart ? (
-                      <>
-                        <strong className="text-portfolio-text font-bold tracking-tight mr-1">
-                          {titlePart}:
+                      <p>
+                        <strong className="text-portfolio-text font-semibold tracking-tight mr-1.5 inline-block">
+                          {titlePart}
                         </strong>
-                        {bodyPart}
-                      </>
+                        <span className="text-portfolio-muted/90">{bodyPart.trim()}</span>
+                      </p>
                     ) : (
-                      feat
+                      <p>{feat}</p>
                     )}
-                  </p>
-                </div>
+                  </div>
+                </li>
               );
             })}
-          </div>
-        </div>
+          </ul>
+        </section>
       )}
 
-    </div>
+    </article>
   );
 }

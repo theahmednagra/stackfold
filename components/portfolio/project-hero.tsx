@@ -8,7 +8,6 @@ interface ProjectHeroProps {
   imageUrl?: string;
   projectUrl?: string;
   githubUrl?: string;
-  techStack?: string[];
 }
 
 export default function ProjectHero({
@@ -18,10 +17,9 @@ export default function ProjectHero({
   imageUrl,
   projectUrl,
   githubUrl,
-  techStack = []
 }: ProjectHeroProps) {
   return (
-    <section className="w-full space-y-8 text-left animate-fade-in relative z-10">
+    <section className="w-full space-y-10 md:space-y-8 text-left animate-fade-in relative z-10">
 
       {/* 📐 Proportional Branding Alignment Grid */}
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -49,19 +47,6 @@ export default function ProjectHero({
               </p>
             )}
 
-            {/* 🛠️ Stack Badges cleanly anchoring the text block height */}
-            {techStack.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 pt-0.5">
-                {techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 py-0.5 rounded-md text-[11px] sm:text-[11.5px] font-mono tracking-tight bg-portfolio-card border border-portfolio-border text-portfolio-muted whitespace-nowrap"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
@@ -102,7 +87,7 @@ export default function ProjectHero({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-portfolio-muted/20 text-2xl sm:text-3xl font-mono select-none">
-            ✦ wireframe missing
+            ✦
           </div>
         )}
       </div>

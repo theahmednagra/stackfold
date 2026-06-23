@@ -9,9 +9,9 @@ import {
   FiPlus,
   FiX,
   FiFileText,
-  FiUser,
 } from "react-icons/fi";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
+import { HiOutlineIdentification } from "react-icons/hi";
 
 interface ProfileSectionProps {
   profileData: any;
@@ -49,7 +49,7 @@ export default function ProfileSection({ profileData, onRefresh }: ProfileSectio
 
       <div className="border-b border-portfolio-border/60 pb-4">
         <h2 className="text-[20px] font-bold text-portfolio-text tracking-tight flex items-center gap-2.5">
-          <FiUser className="w-5 h-5 text-portfolio-accent" />
+          <HiOutlineIdentification className="w-5 h-5 text-portfolio-accent" />
           <span>Profile Identity</span>
         </h2>
       </div>

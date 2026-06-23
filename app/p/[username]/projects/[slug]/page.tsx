@@ -32,7 +32,7 @@ export default async function PublicProjectDetailPage({ params }: Props) {
     <div className="w-full flex flex-col items-center">
       <NavHeader fullname={profile?.fullname} username={username} />
 
-      <main className="w-full max-w-4xl min-h-screen px-6 pt-10 pb-24 relative z-10 space-y-10">
+      <main className="w-full max-w-4xl min-h-screen px-6 pt-10 pb-24 relative z-10 space-y-6 md:space-y-8">
 
         <ProjectHero
           title={project.title}

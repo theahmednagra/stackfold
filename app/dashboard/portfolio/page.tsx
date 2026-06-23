@@ -6,6 +6,7 @@ import ProjectSection from "./_components/projects-section";
 import ExperienceSection from "./_components/experience-section";
 import { useToast } from "@/context/toast-context";
 import ConfirmDialog from "@/components/dashboard/confirm-dialog";
+import { FiAlertTriangle } from "react-icons/fi";
 
 type DeleteTarget = { id: string; type: "project" | "experience" };
 
@@ -13,6 +14,7 @@ export default function PortfolioDashboardPage() {
   const [profileData, setProfileData] = useState<any>(null);
   const [projectsData, setProjectsData] = useState<any[]>([]);
   const [experienceData, setExperienceData] = useState<any[]>([]);
+  const [error, setError] = useState<any>("")
   const [loading, setLoading] = useState(true);
 
   // Reusable confirmation structural states
@@ -43,6 +45,7 @@ export default function PortfolioDashboardPage() {
       setProjectsData(projectsJson.projects || projectsJson || []);
       setExperienceData(experienceJson.experiences || experienceJson || []);
     } catch (err: any) {
+      setError(err)
       console.error("Dashboard core synchronization crash:", err);
       showToast("error", err.message || "An unexpected error occurred during API state synchronization.");
     } finally {
@@ -96,6 +99,22 @@ export default function PortfolioDashboardPage() {
   useEffect(() => {
     fetchDashboardData();
   }, []);
+
+  if (error) {
+    return (
+      <div className="w-full max-w-5xl mx-auto p-6 py-24 text-center">
+        <div className="w-10 h-10 rounded-xl bg-red-950/20 border border-red-900/30 flex items-center justify-center mx-auto text-red-400 mb-4">
+          <FiAlertTriangle size={16} />
+        </div>
+        <p className="text-[14px] font-semibold text-portfolio-text">
+          Failed to load
+        </p>
+        <p className="text-[13px] text-portfolio-muted mt-1 max-w-xs mx-auto">
+          {error ?? "Something went wrong fetching your portfolio data."}
+        </p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

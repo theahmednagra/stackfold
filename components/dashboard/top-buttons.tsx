@@ -26,45 +26,42 @@ const TopButtons = () => {
     };
 
     return (
-        // REMOVED px-4 sm:px-0 to fix alignment shifts
-        <div className="w-full flex justify-end mb-5 select-none">
-            <div className="flex items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
+        <div className="flex w-min items-center gap-2 bg-portfolio-card/30 p-1.5 rounded-xl border border-portfolio-border/40 backdrop-blur-xs">
 
-                {/* Copy Link Control */}
-                <Tooltip content={copied ? "Link Copied!" : "Copy Live Portfolio URL"}>
-                    <button
-                        onClick={onCopy}
-                        disabled={copied}
-                        aria-label={copied ? "Copied portfolio link" : "Copy portfolio link URL to clipboard"}
-                        className={`w-8.5 h-8.5 rounded-lg border flex items-center justify-center transition-all duration-300 bg-portfolio-card cursor-pointer text-[14px] ${copied
-                            ? "text-emerald-400 border-emerald-500/40 bg-emerald-500/5"
-                            : "text-portfolio-muted border-portfolio-border/60 hover:text-portfolio-text hover:border-portfolio-border"
-                            }`}
-                    >
-                        {copied ? <FiCheck className="w-3.5 h-3.5" /> : <FiCopy className="w-3.5 h-3.5" />}
-                    </button>
-                </Tooltip>
+            {/* Copy Link Control */}
+            <Tooltip content={copied ? "Link Copied!" : "Copy Live Portfolio URL"}>
+                <button
+                    onClick={onCopy}
+                    disabled={copied}
+                    aria-label={copied ? "Copied portfolio link" : "Copy portfolio link URL to clipboard"}
+                    className={`w-8.5 h-8.5 rounded-lg border flex items-center justify-center transition-all duration-300 bg-portfolio-card cursor-pointer text-[14px] ${copied
+                        ? "text-emerald-400 border-emerald-500/40 bg-emerald-500/5"
+                        : "text-portfolio-muted border-portfolio-border/60 hover:text-portfolio-text hover:border-portfolio-border"
+                        }`}
+                >
+                    {copied ? <FiCheck className="w-3.5 h-3.5" /> : <FiCopy className="w-3.5 h-3.5" />}
+                </button>
+            </Tooltip>
 
-                {/* Visit External Target Pipeline */}
-                <Tooltip content="Open Live Portfolio">
-                    <a
-                        href={username ? portfolioUrl : "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open live portfolio page in a new window"
-                        className={`w-8.5 h-8.5 rounded-lg border bg-portfolio-card border-portfolio-border/60 text-portfolio-muted hover:text-portfolio-text hover:border-portfolio-border flex items-center justify-center transition-all duration-300 text-[14px] ${!username ? "pointer-events-none opacity-40" : ""
-                            }`}
-                    >
-                        <FiExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                </Tooltip>
+            {/* Visit External Target Pipeline */}
+            <Tooltip content="Open Live Portfolio">
+                <a
+                    href={username ? portfolioUrl : "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open live portfolio page in a new window"
+                    className={`w-8.5 h-8.5 rounded-lg border bg-portfolio-card border-portfolio-border/60 text-portfolio-muted hover:text-portfolio-text hover:border-portfolio-border flex items-center justify-center transition-all duration-300 text-[14px] ${!username ? "pointer-events-none opacity-40" : ""
+                        }`}
+                >
+                    <FiExternalLink className="w-3.5 h-3.5" />
+                </a>
+            </Tooltip>
 
-                <div className="w-px h-4 bg-portfolio-border/60 mx-0.5" />
+            <div className="w-px h-4 bg-portfolio-border/60 mx-0.5" />
 
-                {/* Interface Theme Toggle Selector Switch */}
-                <ThemeToggle />
+            {/* Interface Theme Toggle Selector Switch */}
+            <ThemeToggle />
 
-            </div>
         </div>
     );
 };

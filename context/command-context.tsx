@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useToast } from "./toast-context";
 
 interface CommandContextType {
     isOpen: boolean;
@@ -12,6 +13,7 @@ interface CommandContextType {
 const CommandContext = createContext<CommandContextType | undefined>(undefined);
 
 export function CommandProvider({ children }: { children: React.ReactNode }) {
+    const { showToast } = useToast();
     const [isOpen, setIsOpen] = useState(false);
     const [showCircles, setShowCircles] = useState(true);
 
@@ -32,7 +34,10 @@ export function CommandProvider({ children }: { children: React.ReactNode }) {
         return () => document.removeEventListener("keydown", down);
     }, []);
 
-    const toggleCircles = () => setShowCircles((prev) => !prev);
+    const toggleCircles = () => {
+        setShowCircles((prev) => !prev);
+        showToast("success", "Circles Toggled!")
+    }
 
     return (
         <CommandContext.Provider value={{ isOpen, setIsOpen, showCircles, toggleCircles }}>

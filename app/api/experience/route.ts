@@ -3,7 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import { Info } from "@/models/info.model";
 import { Experience } from "@/models/experience.model";
 import { experienceFormSchema } from "@/schemas/experienceSchema";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 
 /**
  * GET: Retrieves all experiences tied to the logged-in profile context

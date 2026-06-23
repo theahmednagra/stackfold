@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { Project } from "@/models/project.model";
 import { projectFormSchema } from "@/schemas/projectSchema";
-import { verifySession } from "@/lib/authGuard";
+import { verifySession } from "@/lib/auth-guard";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { Info } from "@/models/info.model";
 

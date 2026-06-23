@@ -154,29 +154,33 @@ export default function CommandMenu({ username, projects = [], socials = [] }: C
                                         key={proj.slug}
                                         value={`project-${proj.slug}-${proj.title}`}
                                         onSelect={() => navigateTo(`/p/${username}/projects/${proj.slug}`)}
-                                        className="flex items-center justify-between px-3.5 py-3 rounded-xl cursor-pointer text-[14px] font-medium text-portfolio-text/90 data-[selected=true]:bg-portfolio-bg data-[selected=true]:text-portfolio-accent transition-all duration-100 group"
+                                        className="flex items-center justify-between px-3.5 py-3 rounded-xl cursor-pointer text-[14px] font-medium text-portfolio-text/90 data-[selected=true]:bg-portfolio-bg data-[selected=true]:text-portfolio-accent transition-all duration-100 group min-w-0"
                                     >
                                         <div className="flex items-center gap-3.5 min-w-0">
-                                            {proj.iconUrl ? (
-                                                <LazyImage
-                                                    src={proj.iconUrl}
-                                                    alt=""
-                                                    className="w-5 h-5 object-cover shrink-0 rounded-full"
-                                                />
-                                            ) : (
-                                                <FiFolder className="w-4 h-4 text-portfolio-muted/40 group-data-[selected=true]:text-portfolio-accent transition-colors" />
-                                            )}
+                                            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                                                {proj.iconUrl ? (
+                                                    <LazyImage
+                                                        src={proj.iconUrl}
+                                                        alt=""
+                                                        className="w-full h-full object-cover rounded-full"
+                                                    />
+                                                ) : (
+                                                    <FiFolder className="w-4 h-4 text-portfolio-muted/40 group-data-[selected=true]:text-portfolio-accent transition-colors" />
+                                                )}
+                                            </div>
 
                                             <span className="truncate tracking-tight font-sans">
                                                 Projects <span className="text-portfolio-muted/30 font-normal font-mono mx-0.5">→</span> {proj.title}
                                             </span>
                                         </div>
+
                                         {proj.tagline && (
                                             <span className="text-[11.5px] text-portfolio-muted/40 font-normal hidden sm:block truncate max-w-47.5 font-sans pl-2">
                                                 {proj.tagline}
                                             </span>
                                         )}
                                     </Command.Item>
+
                                 ))}
                             </Command.Group>
                         )}
