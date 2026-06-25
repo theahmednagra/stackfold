@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { generateVerificationData } from "@/utils/generateVerificationData";
 import { connectToDatabase } from "@/lib/db" // Path to your Mongoose connection utility
 import { User } from "@/models/user.model"; // Path to your Mongoose User model
-import { authFormSchema } from "@/schemas/authSchema"; // Reusing our Zod schema
+import { authFormSchema } from "@/schemas/auth.schema"; // Reusing our Zod schema
 import { sendVerificationEmail } from "@/services/email.service";
 
 export async function POST(req: NextRequest) {

@@ -6,12 +6,14 @@ export const authFormSchema = z
         email: z
             .string()
             .min(1, "Email is required.")
+            .max(100, "Email cannot exceed 100 characters.")
             .email("Please enter a valid email address.")
             .lowercase()
             .trim(),
         password: z
             .string()
-            .min(6, "Password must be at least 6 characters long."),
+            .min(6, "Password must be at least 6 characters long.")
+            .max(30, "Password cannot exceed 30 characters."),
         username: z
             .string()
             .min(3, "Username must be at least 3 characters.")

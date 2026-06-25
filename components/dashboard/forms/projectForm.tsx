@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { projectFormSchema, ProjectFormValues } from "@/schemas/projectSchema";
+import { projectFormSchema, ProjectFormValues } from "@/schemas/project.schema";
 import {
     FiFolder,
     FiType,

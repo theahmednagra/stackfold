@@ -39,14 +39,14 @@ const profileSchema = z.object({
     fullname: z.string().min(2).max(50).trim(),
     bio: z.string().min(10).max(160).trim(),
     description: z.string().min(20).trim(),
-    contact: z.string().trim(), // .email() omitted — some providers reject lookahead regex in JSON Schema draft-07
+    contact: z.string().trim(), // .email() omitted - some providers reject lookahead regex in JSON Schema draft-07
     endNote: z.string().max(200).optional(),
     github: optionalUrl,
     linkedin: optionalUrl,
     twitter: optionalUrl,
 });
 
-// Note: no .min() constraints here — some providers may pass empty strings for fields
+// Note: no .min() constraints here - some providers may pass empty strings for fields
 // it does not intend to change. The updateProject execute merges with DB values instead.
 const projectWriteSchema = z.object({
     title: z.string().max(80),
@@ -78,16 +78,16 @@ interface ChatMessage {
 
 export async function POST(req: NextRequest) {
     try {
-        // 1. AUTH — fail fast before any DB or AI work
+        // 1. AUTH - fail fast before any DB or AI work
         const session = await verifySession();
         const { userId, username, email } = session;
 
         const { messages }: { messages: ChatMessage[] } = await req.json();
 
-        // 2. SINGLE DB CONNECTION — not repeated inside each tool
+        // 2. SINGLE DB CONNECTION - not repeated inside each tool
         await connectToDatabase();
 
-        // 3. RESOLVE infoDoc ONCE — most tools need it
+        // 3. RESOLVE infoDoc ONCE - most tools need it
         // We fetch it here so tools don't each re-query for the same document.
         const infoDoc = await Info.findOne({ userId });
 
@@ -111,7 +111,7 @@ RULES:
 - Only use declared tools. Never invent capabilities.
 - "remove X from techStack" or "add X to project" = updateProject (never deletion).
 - "delete project/experience" = flag tool first, then confirm tool after explicit user yes.
-- Deletion needs confirmToken from flag tool — never call confirm without it.
+- Deletion needs confirmToken from flag tool - never call confirm without it.
 - For updateProject: always call getPortfolioSnapshot first to get current field values, then merge changes.
 - Confirm what changed after every write. Be brief and precise.`,
 
@@ -223,14 +223,14 @@ RULES:
                 // ─────────────────────────────────────────────
                 updateProject: tool({
                     description:
-                        "Update an existing project by slug. ALWAYS call getPortfolioSnapshot first to get current values, then merge — only override the fields the user asked to change.",
+                        "Update an existing project by slug. ALWAYS call getPortfolioSnapshot first to get current values, then merge - only override the fields the user asked to change.",
                     inputSchema: projectWriteSchema.extend({
                         slug: z.string().describe("The unique slug of the project to update. Required for identification."),
                     }),
                     execute: async ({ slug, title, tagline, description, techStack, features, projectUrl, githubUrl }) => {
                         if (!infoDoc) return { error: "Profile not initialized." };
 
-                        // Fetch current project first — model may pass empty strings for unchanged fields
+                        // Fetch current project first - model may pass empty strings for unchanged fields
                         const current = await Project.findOne({ slug, infoId: infoDoc._id }).lean();
                         if (!current) return { error: `No project found with slug "${slug}" in your portfolio.` };
 
@@ -294,12 +294,12 @@ RULES:
                         "Phase 2 of deletion: permanently delete project. Requires confirmToken from flagProjectForDeletion. Only call after explicit user confirmation.",
                     inputSchema: z.object({
                         slug: z.string().describe("The slug of the project to delete."),
-                        confirmToken: z.string().describe("The confirmToken returned by flagProjectForDeletion. Required — do not call without it."),
+                        confirmToken: z.string().describe("The confirmToken returned by flagProjectForDeletion. Required - do not call without it."),
                     }),
                     execute: async ({ slug, confirmToken }) => {
                         if (!infoDoc) return { error: "Profile not initialized." };
 
-                        // Token must start with the correct prefix — basic integrity check
+                        // Token must start with the correct prefix - basic integrity check
                         if (!confirmToken.startsWith(`delete-${slug}-`)) {
                             return { error: "Invalid confirmation token. Run flagProjectForDeletion again to get a valid token." };
                         }

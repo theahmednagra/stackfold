@@ -9,8 +9,17 @@ export async function GET(req: NextRequest) {
     const username = searchParams.get("username")?.trim();
     const displayName = searchParams.get("name")?.trim();
 
-    const displayUsername = username ? `@${username.toLowerCase()}` : "Developer";
-    const titleText = displayName || "Portfolio Space";
+    const displayUsername = username ? `@${username.toLowerCase()}` : "";
+    const titleText = displayName || "Developer Profile";
+
+    // ── ROCK SOLID LOCAL FILE FETCH ──
+    // Grabs the local binary asset safely from your repository framework setup
+    const fontData = await fetch(
+      new URL("/fonts/sen/Sen-Bold.ttf", req.url)
+    ).then((res) => {
+      if (!res.ok) throw new Error("Failed to load local Sen-Bold font from public folder");
+      return res.arrayBuffer();
+    });
 
     return new ImageResponse(
       (
@@ -20,124 +29,76 @@ export async function GET(req: NextRequest) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
             backgroundColor: "#030303",
+            // Matte structural background grid layout
+            backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
             position: "relative",
-            fontFamily: "sans-serif",
-            padding: "0 60px",
+            fontFamily: "Sen",
+            padding: "90px 100px",
           }}
         >
-          {/* Subtle Ambient Radial Backglow Grid Effect */}
+          {/* Ambient Backdrop Green Blur Bloom */}
           <div
             style={{
               position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "600px",
-              height: "400px",
-              background: "rgba(168, 85, 247, 0.04)", // Maps to a soft portfolio accent hex
-              filter: "blur(120px)",
+              top: "25%",
+              left: "45%",
+              width: "650px",
+              height: "450px",
+              background: "radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0) 70%)",
+              filter: "blur(50px)",
               borderRadius: "50%",
             }}
           />
 
-          {/* Core Content Box Layout */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              position: "relative",
-            }}
-          >
-            {/* Minimalist Wireframe Code Framework Icon Asset */}
-            <div
-              style={{
-                width: "64px",
-                height: "64px",
-                borderRadius: "16px",
-                border: "1px solid rgba(255, 255, 255, 0.12)",
-                backgroundColor: "rgba(255, 255, 255, 0.03)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "32px",
-              }}
-            >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.9)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-              </svg>
-            </div>
+          {/* Context Network Header */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", position: "relative" }}>
+            <span style={{ fontSize: "24px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
+              Stackfold
+            </span>
+            <span style={{ fontSize: "24px", color: "rgba(255, 255, 255, 0.2)" }}>/</span>
+            <span style={{ fontSize: "20px", fontWeight: 700, color: "rgba(255, 255, 255, 0.4)", letterSpacing: "-0.01em", marginTop: "3px" }}>
+              Developer Network
+            </span>
+          </div>
 
-            {/* Dynamic Card Typography Stack */}
-            <h1
-              style={{
-                fontSize: "52px",
-                fontWeight: 900,
-                letterSpacing: "-0.04em",
-                color: "#FFFFFF",
-                margin: "0 0 16px 0",
-              }}
-            >
+          {/* Core Content: Dynamic User Focus Block */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", position: "relative", maxWidth: "950px", marginBottom: "auto", marginTop: "auto" }}>
+            {displayUsername && (
+              <span style={{ fontSize: "24px", fontWeight: 700, color: "#10b981", letterSpacing: "0.02em", marginBottom: "16px", backgroundColor: "rgba(16, 185, 129, 0.06)", padding: "4px 12px", borderRadius: "6px", border: "1px solid rgba(16, 185, 129, 0.15)" }}>
+                {displayUsername}
+              </span>
+            )}
+            <h1 style={{ fontSize: "72px", fontWeight: 700, letterSpacing: "-0.04em", color: "#FFFFFF", margin: "0", lineHeight: 1.1 }}>
               {titleText}
             </h1>
+          </div>
 
-            <p
-              style={{
-                fontSize: "24px",
-                fontWeight: 500,
-                color: "rgba(255, 255, 255, 0.5)",
-                margin: "0 0 56px 0",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              The production workspace hub engineered by {displayUsername}
-            </p>
-
-            {/* Bottom Mini Branding Footer Flag */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "8px 18px",
-                borderRadius: "8px",
-                border: "1px solid rgba(255, 255, 255, 0.06)",
-                backgroundColor: "rgba(255, 255, 255, 0.02)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.15em",
-                  color: "rgba(255, 255, 255, 0.3)",
-                }}
-              >
-                Powered by Stackfold
-              </span>
-            </div>
+          {/* Context Footer Identity Footprint */}
+          <div style={{ display: "flex", width: "100%", position: "relative", borderTop: "1px solid rgba(255, 255, 255, 0.05)", paddingTop: "32px" }}>
+            <span style={{ fontSize: "20px", fontWeight: 700, color: "rgba(255, 255, 255, 0.4)", letterSpacing: "-0.01em" }}>
+              Verified Creator Portfolio • Powered by Stackfold Engine
+            </span>
           </div>
         </div>
       ),
       {
         width: 1200,
         height: 630,
+        fonts: [
+          {
+            name: "Sen",
+            data: fontData,
+            style: "normal",
+            weight: 700, // Explicitly binds the loaded bold file weight to the styling layout
+          },
+        ],
       }
     );
   } catch (error) {
+    console.error("OG Image generation engine crash details:", error);
     return new Response(`Failed to generate portfolio preview asset canvas`, { status: 500 });
   }
 }

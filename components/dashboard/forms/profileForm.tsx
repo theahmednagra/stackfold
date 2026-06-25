@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { profileFormSchema, ProfileFormValues } from "@/schemas/profileSchema";
+import { profileFormSchema, ProfileFormValues } from "@/schemas/profile.schema";
 import {
   FiUser,
   FiFileText,

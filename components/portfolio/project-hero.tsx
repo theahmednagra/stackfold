@@ -19,34 +19,40 @@ export default function ProjectHero({
   githubUrl,
 }: ProjectHeroProps) {
   return (
-    <section className="w-full space-y-10 md:space-y-8 text-left animate-fade-in relative z-10">
+    <section className="w-full space-y-6 md:space-y-8 text-left animate-fade-in relative z-10">
 
       {/* 📐 Proportional Branding Alignment Grid */}
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-6">
 
         {/* Left Side: Combined Icon & Content Core */}
-        <div className="flex items-start gap-5 max-w-3xl flex-1 min-w-0">
-          {iconUrl && (
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl border border-portfolio-border bg-portfolio-card p-2 shrink-0 flex items-center justify-center shadow-xs overflow-hidden">
-              <LazyImage
-                src={iconUrl}
-                alt={`${title} icon`}
-                className="w-full h-full object-contain rounded-lg"
-              />
-            </div>
-          )}
+        <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 max-w-3xl flex-1 w-full min-w-0">
 
-          <div className="flex flex-col justify-center space-y-2.5 min-w-0 flex-1">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-portfolio-text wrap-break-word">
+          {/* TOP ROW FOR MOBILE: Groups the Icon and Title together */}
+          <div className="flex items-center sm:items-start gap-3 sm:gap-0 min-w-0 w-full sm:w-auto">
+            {iconUrl && (
+              <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mr-1 rounded-xl sm:rounded-2xl border border-portfolio-border/60 bg-portfolio-card p-1 sm:p-1.5 shrink-0 flex items-center justify-center shadow-xs overflow-hidden">
+                <LazyImage
+                  src={iconUrl}
+                  alt={`${title} icon`}
+                  className="w-full h-full object-contain rounded-lg"
+                />
+              </div>
+            )}
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-portfolio-text wrap-break-word sm:hidden flex-1 min-w-0">
               {title}
             </h1>
+          </div>
 
+          {/* MAIN CONTENT BLOCK FOR DESKTOP & TAGLINE POSITIONING */}
+          <div className="flex flex-col justify-center min-w-0 flex-1 w-full">
+            <h1 className="hidden sm:block text-3xl sm:text-4xl font-bold tracking-tight text-portfolio-text wrap-break-word mb-2.5">
+              {title}
+            </h1>
             {tagline && (
-              <p className="text-[14.5px] sm:text-[15.5px] font-medium text-portfolio-accent font-mono leading-tight wrap-break-word">
+              <p className="text-[14px] sm:text-[15.5px] font-medium text-portfolio-accent font-mono leading-tight wrap-break-word sm:mt-0 mt-1">
                 {tagline}
               </p>
             )}
-
           </div>
         </div>
 

@@ -43,13 +43,13 @@ export default function FeaturedProjects({ projects = [], username }: FeaturedPr
             <div
               key={proj._id.toString()}
               onClick={() => navigate(`/p/${username}/projects/${proj.slug}`)}
-              className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl border border-portfolio-border bg-portfolio-card/30 transition-all duration-300 hover:border-portfolio-accent/20 hover:bg-portfolio-card/70 hover:shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-full"
+              className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 p-5 rounded-2xl border border-portfolio-border bg-portfolio-card/30 transition-all duration-300 hover:border-portfolio-accent/20 hover:bg-portfolio-card/70 hover:shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-full"
             >
               {/* Left Core Context Block */}
-              <div className="flex items-center gap-4 min-w-0 flex-1">
+              <div className="flex items-center sm:items-start gap-2.5 sm:gap-4 min-w-0 flex-1">
 
                 {/* Premium Isolated Icon Frame Container */}
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl shrink-0 overflow-hidden border border-portfolio-border bg-portfolio-bg p-1.5 flex items-center justify-center transition-all duration-300 group-hover:scale-[1.03] group-hover:border-portfolio-accent/30 shadow-2xs">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shrink-0 overflow-hidden border border-portfolio-border/60  bg-portfolio-card/60 p-1 flex items-center justify-center transition-all duration-300 group-hover:border-portfolio-accent/30 shadow-2xs">
                   {proj.iconUrl ? (
                     <LazyImage
                       src={proj.iconUrl}
@@ -62,7 +62,7 @@ export default function FeaturedProjects({ projects = [], username }: FeaturedPr
                 </div>
 
                 {/* Text Canvas: Optimized for Hybrid Row/Stack Layouts */}
-                <div className="space-y-1 min-w-0 flex-1 pt-0.5 sm:pt-0">
+                <div className="min-w-0 flex-1 pt-0.5 sm:pt-0">
                   <div className="flex items-center justify-between sm:justify-start gap-3 w-full">
                     <h3 className="text-[17px] sm:text-[18px] font-bold tracking-tight text-portfolio-text group-hover:text-portfolio-accent transition-colors duration-200 truncate">
                       {proj.title}
@@ -100,7 +100,7 @@ export default function FeaturedProjects({ projects = [], username }: FeaturedPr
         <div className="pt-2">
           <div
             onClick={() => navigate(`/p/${username}/projects`)}
-            className="inline-flex items-center gap-2 text-[15.5px] font-medium text-portfolio-muted hover:text-portfolio-text transition-colors group"
+            className="inline-flex items-center gap-2 text-[15.5px] font-medium text-portfolio-muted hover:text-portfolio-text transition-colors group cursor-pointer"
           >
             View All Projects <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
           </div>

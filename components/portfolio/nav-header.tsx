@@ -52,7 +52,7 @@ export default function NavHeader({ fullname, username }: NavHeaderProps) {
   return (
     <>
       <nav className="w-full p-6 flex justify-between items-center relative z-50 select-none">
-        
+
         {/* Breadcrumbs Track */}
         <div className="flex items-center gap-2 text-[17px] font-mono tracking-tight">
           {isProjectsRoot ? (
@@ -80,17 +80,15 @@ export default function NavHeader({ fullname, username }: NavHeaderProps) {
         <div className="hidden sm:flex items-center gap-1 bg-portfolio-card border border-portfolio-border p-1.5 rounded-xl backdrop-blur-md">
           <button
             onClick={() => navigate(`/p/${username}`)}
-            className={`text-[14px] font-medium px-4 py-1.5 rounded-lg transition-all duration-300 cursor-pointer ${
-              pathSegments.length === 2 ? "bg-portfolio-text text-portfolio-bg shadow-xs" : "text-portfolio-muted hover:text-portfolio-text"
-            }`}
+            className={`text-[14px] font-medium px-4 py-1.5 rounded-lg transition-all duration-300 cursor-pointer ${pathSegments.length === 2 ? "bg-portfolio-text text-portfolio-bg shadow-xs" : "text-portfolio-muted hover:text-portfolio-text"
+              }`}
           >
             Home
           </button>
           <button
             onClick={() => navigate(`/p/${username}/projects`)}
-            className={`text-[14px] font-medium px-4 py-1.5 rounded-lg transition-all duration-300 cursor-pointer ${
-              pathSegments.includes("projects") ? "bg-portfolio-text text-portfolio-bg shadow-xs" : "text-portfolio-muted hover:text-portfolio-text"
-            }`}
+            className={`text-[14px] font-medium px-4 py-1.5 rounded-lg transition-all duration-300 cursor-pointer ${pathSegments.includes("projects") ? "bg-portfolio-text text-portfolio-bg shadow-xs" : "text-portfolio-muted hover:text-portfolio-text"
+              }`}
           >
             Projects
           </button>
@@ -102,28 +100,25 @@ export default function NavHeader({ fullname, username }: NavHeaderProps) {
           className="flex sm:hidden flex-col justify-center items-center w-8 h-8 relative z-50 rounded-lg hover:bg-portfolio-card/50 transition-colors cursor-pointer"
           aria-label="Toggle Navigation Menu"
         >
-          <div className="flex flex-col gap-1.5 w-5">
-            <span 
-              className={`h-0.5 w-full bg-portfolio-text rounded-full transition-all duration-300 origin-center ${
-                isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
-              }`} 
+          <div className="flex flex-col gap-1.5 w-5 h-4 justify-center relative">
+            <span
+              className={`h-0.5 w-full bg-portfolio-text rounded-full transition-all duration-300 ${isMobileMenuOpen
+                ? "rotate-45 translate-y-1"
+                : ""
+                }`}
             />
-            <span 
-              className={`h-0.5 w-full bg-portfolio-text rounded-full transition-all duration-200 ${
-                isMobileMenuOpen ? "opacity-0 scale-x-0" : ""
-              }`} 
-            />
-            <span 
-              className={`h-0.5 w-full bg-portfolio-text rounded-full transition-all duration-300 origin-center ${
-                isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
-              }`} 
+            <span
+              className={`h-0.5 w-full bg-portfolio-text rounded-full transition-all duration-300 ${isMobileMenuOpen
+                ? "-rotate-45 -translate-y-1"
+                : ""
+                }`}
             />
           </div>
         </button>
       </nav>
 
       {/* 📱 Decoupled Sidebar Overlay Panel */}
-      <MobileMenuDrawer 
+      <MobileMenuDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         onNavigate={handleMobileNavigate}

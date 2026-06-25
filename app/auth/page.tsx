@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authFormSchema, type AuthFormValues } from "@/schemas/authSchema";
+import { authFormSchema, type AuthFormValues } from "@/schemas/auth.schema";
 import {
   FiMail,
   FiLock,

@@ -57,7 +57,7 @@ export default function ExperienceCard({ item, onEdit, onDelete }: ExperienceCar
                     <div className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-portfolio-bg border border-portfolio-border/40 text-portfolio-muted">
                         <FiCalendar className="w-3.5 h-3.5 opacity-60" />
                         <span>
-                            {formatTimelineDate(item.startDate)} — {item.currentJob ? "Present" : formatTimelineDate(item.endDate)}
+                            {formatTimelineDate(item.startDate)} - {item.currentJob ? "Present" : formatTimelineDate(item.endDate)}
                         </span>
                     </div>
 

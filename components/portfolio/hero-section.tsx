@@ -31,13 +31,13 @@ export default function HeroSection({ fullname, bio, description, socialLinks }:
                 <h1 className="text-4xl md:text-[52px] font-bold tracking-tight text-portfolio-text leading-[1.15] md:leading-[1.1]">
                     {fullname || "Developer"}
                 </h1>
-                <p className="text-[16.5px] md:text-[18.5px] font-medium text-portfolio-muted tracking-wide">
+                <p className="text-[16.5px] md:text-[18.5px] font-medium text-portfolio-text/90 tracking-wide">
                     {bio || "Creator • Full-stack Web Developer • Mobile App Developer"}
                 </p>
             </div>
 
             {/* Core Narrative Block */}
-            <div className="text-[16px] md:text-[18px] text-portfolio-text/80 leading-relaxed font-normal tracking-normal whitespace-pre-wrap max-w-3xl transition-colors duration-300">
+            <div className="text-[16px] md:text-[18px] text-portfolio-muted leading-relaxed font-normal tracking-normal whitespace-pre-wrap max-w-3xl transition-colors duration-300">
                 {description || "Welcome to my portfolio! Here you'll find a curated selection of my projects, experiences, and the journey that has shaped me as a developer."}
             </div>
 

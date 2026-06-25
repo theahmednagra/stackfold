@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
-import { authFormSchema } from "@/schemas/authSchema";
+import { authFormSchema } from "@/schemas/auth.schema";
 
 // A fallback placeholder hash used to mitigate timing analysis attacks
 const DUMMY_HASH = "$2b$10$K9R6FmH1Kq9tXbZ7hR5eOuG4vK3n2m1l0o9p8q7r6s5t4u3v2w1x2";

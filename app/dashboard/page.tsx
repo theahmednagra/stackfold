@@ -203,7 +203,7 @@ export default function OverviewDashboard() {
                   Recent projects
                 </h2>
               </div>
-              <p className="text-[12.5px] text-portfolio-muted pl-5.5">
+              <p className="text-[12.5px] text-portfolio-muted">
                 Latest builds in your portfolio
               </p>
             </div>

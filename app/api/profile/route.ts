@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { verifySession } from "@/lib/auth-guard";
 import { Info } from "@/models/info.model";
-import { profileFormSchema } from "@/schemas/profileSchema";
+import { profileFormSchema } from "@/schemas/profile.schema";
 
 /**
  * GET: Retrieves the user's profile info and maps the database's flat 

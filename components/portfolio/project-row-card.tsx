@@ -26,7 +26,7 @@ export default function ProjectRowCard({ project, username }: ProjectRowCardProp
     const projectRoute = `/p/${username}/projects/${project.slug}`;
 
     return (
-        <div className="w-full p-5 sm:p-6 rounded-2xl border border-portfolio-border bg-portfolio-card flex flex-col md:flex-row items-stretch gap-5 md:gap-6 transition-all duration-300 hover:border-portfolio-accent/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] group">
+        <div className="w-full p-4 sm:p-6 rounded-2xl border border-portfolio-border bg-portfolio-card flex flex-col md:flex-row items-stretch gap-5 md:gap-6 transition-all duration-300 hover:border-portfolio-accent/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] group">
 
             {/* 🖼️ LEFT ELEMENT COLUMN: High-Fidelity Mockup Container */}
             <div
@@ -55,11 +55,11 @@ export default function ProjectRowCard({ project, username }: ProjectRowCardProp
                     {/* Responsive Title + Icon Block Grid */}
                     <div
                         onClick={() => navigate(projectRoute)}
-                        className="flex items-start gap-3.5 cursor-pointer max-w-full group/title mb-3"
+                        className="flex items-start gap-2.5 cursor-pointer max-w-full group/title mb-3"
                     >
                         {project.iconUrl && (
                             /* Premium Scaled Icon Container */
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-portfolio-border bg-portfolio-bg p-1.5 shrink-0 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover/title:border-portfolio-accent/30 group-hover/title:scale-[1.02] shadow-2xs">
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-portfolio-border/60 bg-portfolio-bg p-1 shrink-0 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover/title:border-portfolio-accent/30 group-hover/title:scale-[1.02] shadow-2xs">
                                 <LazyImage
                                     src={project.iconUrl}
                                     alt={`${project.title} logo`}

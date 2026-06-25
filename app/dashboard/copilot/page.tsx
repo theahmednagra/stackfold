@@ -14,7 +14,7 @@ interface LocalMessage {
 // ---------------------------------------------------------------------------
 // MARKDOWN RENDERER
 // Handles bold, italic, inline code, code blocks, headers, and bullet lists.
-// Keeps raw text clean — no asterisks or backticks visible to the user.
+// Keeps raw text clean - no asterisks or backticks visible to the user.
 // ---------------------------------------------------------------------------
 function renderMarkdown(text: string): React.ReactNode[] {
     const lines = text.split("\n");
@@ -189,7 +189,6 @@ function inlineFormat(text: string): React.ReactNode {
 const THINKING_PHRASES = [
     "Reading your portfolio...",
     "Thinking...",
-    "Checking your projects...",
     "Working on it...",
     "Querying the database...",
     "Analyzing your request...",
@@ -213,7 +212,7 @@ function ThinkingIndicator() {
                     <span
                         key={i}
                         className="w-1.5 h-1.5 rounded-full bg-portfolio-accent/70 animate-bounce"
-                        style={{ animationDelay: `${i * 150}ms` }}
+                        style={{ animationDelay: `${i * 200}ms` }}
                     />
                 ))}
             </div>
@@ -234,7 +233,7 @@ function ThinkingIndicator() {
 const QUICK_PROMPTS = [
     "Show me a snapshot of my entire portfolio.",
     "Rewrite my bio to sound punchy and tailored to full-stack engineering.",
-    "Add a new project called Stackfold — a portfolio builder SaaS with Next.js and AI tool-calling.",
+    "Add a new project called Stackfold - a portfolio builder SaaS with Next.js.",
     "How many visits has my portfolio gotten this week?",
 ];
 
@@ -291,7 +290,7 @@ export default function AIAssistantPage() {
                 }),
             });
 
-            // Non-2xx response — surface a clean error message
+            // Non-2xx response - surface a clean error message
             if (!response.ok) {
                 const errorText = await response.text().catch(() => "");
                 let errorMessage = "Something went wrong. Please try again.";
@@ -320,7 +319,7 @@ export default function AIAssistantPage() {
                 return;
             }
 
-            // First token is about to arrive — hide thinking indicator, seed message slot
+            // First token is about to arrive - hide thinking indicator, seed message slot
             setIsThinking(false);
             setMessages((prev) => [
                 ...prev,
@@ -391,10 +390,7 @@ export default function AIAssistantPage() {
                 {messages.length === 0 ? (
                     <div className="h-full flex flex-col justify-center max-w-lg mx-auto space-y-5 px-1 select-none">
                         <div className="space-y-1">
-                            <h2 className="text-[14px] sm:text-[15px] font-bold text-portfolio-text tracking-tight">
-                                No messages yet
-                            </h2>
-                            <p className="text-[12px] sm:text-[13px] text-portfolio-muted leading-relaxed">
+                            <p className="text-[12.5px] font-semibold sm:text-[13px] text-portfolio-text/90 leading-relaxed">
                                 Ask anything about your portfolio, or pick a suggestion below to get started.
                             </p>
                         </div>
@@ -451,7 +447,7 @@ export default function AIAssistantPage() {
                                         // Error messages shown as plain text with amber styling
                                         <p className="whitespace-pre-wrap">{message.content}</p>
                                     ) : message.content === "" ? (
-                                        // Streaming not started yet — pulse dots
+                                        // Streaming not started yet - pulse dots
                                         <div className="flex items-center gap-1 pt-0.5">
                                             {[0, 1, 2].map((i) => (
                                                 <span
@@ -471,7 +467,7 @@ export default function AIAssistantPage() {
                             </div>
                         ))}
 
-                        {/* Thinking indicator — shown between send and first token */}
+                        {/* Thinking indicator - shown between send and first token */}
                         {isThinking && (
                             <div className="space-y-2 animate-fadeIn">
                                 <div className="flex items-center gap-1.5 select-none">
@@ -486,7 +482,7 @@ export default function AIAssistantPage() {
                             </div>
                         )}
 
-                        {/* Streaming indicator — shown while tokens are arriving */}
+                        {/* Streaming indicator - shown while tokens are arriving */}
                         {isLoading && !isThinking && messages[messages.length - 1]?.role === "assistant" &&
                             messages[messages.length - 1]?.content !== "" && (
                                 <div className="flex items-center gap-2 select-none pl-3.5">

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { experienceFormSchema, ExperienceFormValues } from "@/schemas/experienceSchema";
+import { experienceFormSchema, ExperienceFormValues } from "@/schemas/experience.schema";
 import {
     FiBriefcase,
     FiBriefcase as FiAward,

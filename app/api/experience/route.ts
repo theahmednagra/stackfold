@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { Info } from "@/models/info.model";
 import { Experience } from "@/models/experience.model";
-import { experienceFormSchema } from "@/schemas/experienceSchema";
+import { experienceFormSchema } from "@/schemas/experience.schema";
 import { verifySession } from "@/lib/auth-guard";
 
 /**

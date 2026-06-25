@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import { User } from "@/models/user.model";
-import { authFormSchema } from "@/schemas/authSchema";
+import { authFormSchema } from "@/schemas/auth.schema";
 import { Info } from "@/models/info.model";
 
 export async function POST(req: NextRequest) {
