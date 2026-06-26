@@ -5,7 +5,6 @@ import { getProfileStatus } from "./layout"; // Import the cached engine from yo
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
     const { username } = await params;
 
-    // ⚡ CRITICAL: Use your production environment URL or fall back to localhost
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://stackfold.vercel.app";
     const fallbackTitle = "Stackfold Portfolio";
     const fallbackDesc = "Build a portfolio that commands attention. The minimalist developer platform.";
@@ -16,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
             { url: `${baseUrl}/favicon.ico`, sizes: "any" },
             { url: `${baseUrl}/icon.png`, type: "image/png" }
         ],
-        apple: `${baseUrl}/apple-touch-icon.png`, // Perfect for Apple shortcut support
+        apple: `${baseUrl}/apple-touch-icon.png`,
     };
 
 
@@ -30,6 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
     const resolution = await getProfileStatus(username);
     const formattedUsername = username.toLowerCase().trim();
+
+    const currentCanonicalUrl = `${baseUrl}/p/${formattedUsername}`;
 
     // 1. Soft fallback state if the user hasn't created their profile document yet
     if (resolution.status === "UNINITIALIZED") {
@@ -45,11 +46,14 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
             title,
             description,
             icons: globalIconsConfig,
+            alternates: {
+                canonical: currentCanonicalUrl,
+            },
             openGraph: {
                 title,
                 description,
                 type: "website",
-                url: `${baseUrl}/${formattedUsername}`,
+                url: currentCanonicalUrl,
                 images: [{ url: dynamicOgImageUrl, width: 1200, height: 630, alt: "Stackfold Space Reserved" }],
             },
             twitter: {
@@ -74,9 +78,13 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
             title,
             description: "This portfolio space does not exist or has been set to private by the owner.",
             icons: globalIconsConfig,
+            alternates: {
+                canonical: currentCanonicalUrl,
+            },
             openGraph: {
                 title,
                 type: "website",
+                url: currentCanonicalUrl,
                 images: [{ url: dynamicOgImageUrl, width: 1200, height: 630 }],
             },
             twitter: {
@@ -106,12 +114,15 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         title: `${profile.fullname || "Developer"} - Portfolio`,
         description: profileDesc,
         icons: globalIconsConfig, // Ensures Stackfold's brand always applies to live links
+        alternates: {
+            canonical: currentCanonicalUrl,
+        },
         openGraph: {
             title: profileTitle,
             description: profileDesc,
             type: "profile",
             username: formattedUsername,
-            url: `${baseUrl}/${formattedUsername}`,
+            url: currentCanonicalUrl,
             siteName: "Stackfold",
             images: [
                 {

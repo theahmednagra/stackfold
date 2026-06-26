@@ -24,7 +24,7 @@ export const sendVerificationEmail = async (email: string, code: string | undefi
             body: JSON.stringify({
                 sender: {
                     email: process.env.BREVO_EMAIL,
-                    name: "Portfolio Builder",
+                    name: "Stackfold",
                 },
                 to: [
                     { email }
