@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
         }
 
         let projectSlug = generateSlug(title);
-        const existingSlugCount = await Project.countDocuments({ slug: projectSlug });
+        const existingSlugCount = await Project.countDocuments({ slug: projectSlug, infoId: userProfile._id });
         if (existingSlugCount > 0) {
             projectSlug = `${projectSlug}-${Math.random().toString(36).substring(2, 6)}`;
         }

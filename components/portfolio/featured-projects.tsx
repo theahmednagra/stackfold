@@ -49,7 +49,7 @@ export default function FeaturedProjects({ projects = [], username }: FeaturedPr
               <div className="flex items-center sm:items-start gap-2.5 sm:gap-4 min-w-0 flex-1">
 
                 {/* Premium Isolated Icon Frame Container */}
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shrink-0 overflow-hidden border border-portfolio-border/60  bg-portfolio-card/60 p-1 flex items-center justify-center transition-all duration-300 group-hover:border-portfolio-accent/30 shadow-2xs">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shrink-0 overflow-hidden border border-portfolio-border/60 bg-portfolio-card p-1 flex items-center justify-center shadow-2xs">
                   {proj.iconUrl ? (
                     <LazyImage
                       src={proj.iconUrl}

@@ -20,6 +20,7 @@ const ExperienceSchema = new Schema<IExperience>(
             ref: "Info",
             required: true,
             index: true,
+            unique: true,
         },
         company: { type: String, required: true },
         role: { type: String, required: true },

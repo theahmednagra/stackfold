@@ -31,7 +31,7 @@ export default function ProjectRowCard({ project, username }: ProjectRowCardProp
             {/* 🖼️ LEFT ELEMENT COLUMN: High-Fidelity Mockup Container */}
             <div
                 onClick={() => navigate(projectRoute)}
-                className="w-full md:w-75 aspect-video md:h-auto rounded-xl overflow-hidden shrink-0 cursor-pointer relative bg-portfolio-bg border border-portfolio-border/40 transition-all duration-500 group-hover:scale-[1.01] group-hover:border-portfolio-accent/10"
+                className="w-full md:w-75 aspect-video md:h-auto rounded-xl overflow-hidden shrink-0 cursor-pointer relative bg-portfolio-bg border border-portfolio-border/40 transition-all duration-500 group-hover:border-portfolio-accent/10"
             >
                 {project.imageUrl ? (
                     <LazyImage
@@ -59,7 +59,7 @@ export default function ProjectRowCard({ project, username }: ProjectRowCardProp
                     >
                         {project.iconUrl && (
                             /* Premium Scaled Icon Container */
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-portfolio-border/60 bg-portfolio-bg p-1 shrink-0 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover/title:border-portfolio-accent/30 group-hover/title:scale-[1.02] shadow-2xs">
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-portfolio-border/60 bg-portfolio-bg/40 p-1 shrink-0 flex items-center justify-center overflow-hidden shadow-2xs">
                                 <LazyImage
                                     src={project.iconUrl}
                                     alt={`${project.title} logo`}

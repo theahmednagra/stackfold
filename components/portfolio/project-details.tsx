@@ -9,78 +9,64 @@ interface ProjectDetailsProps {
 export default function ProjectDetails({
   description,
   features = [],
-  techStack = []
+  techStack = [],
 }: ProjectDetailsProps) {
   return (
-    <article className="w-full space-y-6 md:space-y-8 text-left animate-fade-in antialiased selection:bg-portfolio-accent/20">
+    <article className="w-full text-left animate-fade-in antialiased selection:bg-portfolio-accent/20">
 
-      {/* SECTION 1: Case Overview Copy */}
-      <section className="prose prose-portfolio max-w-none">
-        <p className="text-[16px] leading-relaxed font-normal tracking-wide text-portfolio-muted whitespace-pre-wrap">
-          {description}
-        </p>
-      </section>
+      {/* ── DESCRIPTION ── */}
+      <p className="text-[16px] leading-[1.85] text-portfolio-muted whitespace-pre-wrap mb-4 sm:mb-6">
+        {description}
+      </p>
 
-      {/* SECTION 2: Technical Stack Row */}
+      {/* ── FEATURES ── */}
+      {features.length > 0 && (
+        <div className="mb-5 sm:mb-7">
+          <h2 className="text-[18px] sm:text-[20px] font-bold text-portfolio-text tracking-tight mb-4">
+            Key Features
+          </h2>
+          <ul className="space-y-2.5 ml-3 sm:ml-6">
+            {features.map((feat, index) => {
+              const match = feat.match(/^([^:]+):(.*)$/);
+              const titlePart = match ? match[1].trim() : null;
+              const bodyPart = match ? match[2].trim() : feat;
+
+              return (
+                <li key={index} className="flex items-start gap-3 sm:gap-5">
+                  <span className="mt-2.25 w-1.5 h-1.5 rounded-full bg-portfolio-text shrink-0" />
+                  <span className="text-[15px] text-portfolio-muted leading-relaxed">
+                    {titlePart ? (
+                      <>
+                        <strong className="font-semibold text-portfolio-text">
+                          {titlePart}:
+                        </strong>{" "}
+                        {bodyPart}
+                      </>
+                    ) : (
+                      feat
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      {/* ── TECH STACK ── */}
       {techStack.length > 0 && (
-        <section
-          className="w-full py-6 border-y border-portfolio-border/30 flex flex-col md:flex-row md:items-center gap-4"
-          aria-label="Technology Stack"
-        >
-          <h3 className="text-[12px] font-mono font-bold tracking-widest text-portfolio-text/60 uppercase shrink-0 select-none">
-            Engineered With
-          </h3>
+        <div>
           <div className="flex flex-wrap gap-2">
             {techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-3 py-1 rounded-md text-[12px] font-mono bg-portfolio-card/50 border border-portfolio-border/60 text-portfolio-text/90 font-medium tracking-tight shadow-xs hover:border-portfolio-accent/40 transition-colors duration-200"
+                className="px-2.75 py-1.25 rounded-lg text-[11.5px] font-mono font-medium bg-portfolio-card/40 border border-portfolio-border/60 text-portfolio-text/75 hover:border-portfolio-accent/40 hover:text-portfolio-text transition-all duration-150"
               >
                 {tech}
               </span>
             ))}
           </div>
-        </section>
-      )}
-
-      {/* SECTION 3: Highlights & Innovations */}
-      {features.length > 0 && (
-        <section className="space-y-6 w-full" aria-label="Project Highlights">
-          <h3 className="text-[12px] font-mono font-bold tracking-widest text-portfolio-accent uppercase select-none">
-            Core Highlights & Innovations
-          </h3>
-          <ul className="grid gap-4 w-full list-none m-0 p-0">
-            {features.map((feat, index) => {
-              const match = feat.match(/^([^:]+):(.*)$/);
-              const titlePart = match ? match[1].trim() : null;
-              const bodyPart = match ? match[2] : feat;
-
-              return (
-                <li
-                  key={index}
-                  className="group w-full flex items-start gap-3 text-[16px] text-portfolio-muted leading-relaxed"
-                >
-                  <span
-                    className="w-1.5 h-1.5 mt-2.25 rounded-full bg-portfolio-accent/70 group-hover:bg-portfolio-accent transition-colors duration-200 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <div className="w-full wrap-break-word">
-                    {titlePart ? (
-                      <p>
-                        <strong className="text-portfolio-text font-semibold tracking-tight mr-1.5 inline-block">
-                          {titlePart}:
-                        </strong>
-                        <span className="text-portfolio-muted">{bodyPart.trim()}</span>
-                      </p>
-                    ) : (
-                      <p>{feat}</p>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
+        </div>
       )}
 
     </article>

@@ -270,7 +270,7 @@ export default function ExperienceForm({ initialData, onComplete }: ExperienceFo
                         ? "border-red-500 focus:border-red-500 shadow-[0_0_14px_rgba(239,68,68,0.1)]"
                         : "border-portfolio-border/80 focus:border-portfolio-accent focus:bg-portfolio-bg"
                         }`}
-                    placeholder="- Spearheaded migration to Next.js App Router, boosting performance metric arrays by 40%&#10;- Mentored 4 junior engineering candidates across fullstack operations..."
+                    placeholder="Spearheaded migration to Next.js App Router, boosting performance metric arrays by 40%&#10;- Mentored 4 junior engineering candidates across fullstack operations..."
                 />
                 {errors.description && (
                     <p className="text-[13px] font-medium text-red-400 pl-0.5 mt-0.5 flex items-center gap-1.5">

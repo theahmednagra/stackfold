@@ -23,13 +23,13 @@ const ProjectSchema = new Schema<IProject>(
         infoId: {
             type: Schema.Types.ObjectId,
             ref: "Info",
+            unique: true,
             required: true,
-            index: true,
         },
 
         title: { type: String, required: true },
         tagline: { type: String, required: true },
-        slug: { type: String, required: true, unique: true, lowercase: true },
+        slug: { type: String, required: true, lowercase: true, trim: true },
 
         description: { type: String, required: true },
 
@@ -53,6 +53,8 @@ const ProjectSchema = new Schema<IProject>(
         timestamps: true,
     }
 );
+
+ProjectSchema.index({ infoId: 1, slug: 1 }, { unique: true });
 
 export const Project =
     mongoose.models.Project || mongoose.model<IProject>("Project", ProjectSchema);
