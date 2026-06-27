@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         await user.save();
 
         // 7. Non-blocking Asynchronous Background Email Execution
-        sendVerificationEmail(user.email, code).catch((err) =>
+        await sendVerificationEmail(user.email, code).catch((err) =>
             console.error("Critical: Resend email dispatch failure:", err)
         );
 
@@ -70,7 +70,3 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// Stub mock function for your mail delivery agent service (Nodemailer, Resend, etc.)
-async function sendVerificationMail(email: string, code: string) {
-    console.log(`[EMAIL DISPATCH SYSTEM] -> fresh Token [${code}] resent out to target inbox: ${email}`);
-}

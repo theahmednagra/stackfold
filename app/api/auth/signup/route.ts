@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
         // 6. Asynchronous Background Task Execution
         // We run the email sender code in the background without using 'await',
         // preventing slow email APIs from delaying our server's response to the user.
-        sendVerificationEmail(user.email, code).catch((err) =>
+        await sendVerificationEmail(user.email, code).catch((err) =>
             console.error("Critical: Verification email dispatch failure:", err)
         );
 
